@@ -59,7 +59,7 @@ int main()
                     printf("3: Tooth filling\n");
                     printf("4: Tooth extraction\n");
                     printf("5: Logout\n"); // Add a logout option
-                    // Add other options for logged-in customers here...
+
                     printf("Select service item: ");
                 }
 

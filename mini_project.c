@@ -18,7 +18,7 @@ typedef struct person
 
 int main()
 {
-    int choice, case_emp, case_pub;
+    int choice, case_emp, case_pub, case_service;
     persons customer, *head = NULL, *current, *ptr;
     char ch = 'y';
     int isCustomerLoggedIn = 0;
@@ -46,21 +46,62 @@ int main()
                 {
                     printf("1: Login\n");
                     printf("2: Register\n");
-                    printf("4: Forget Password\n");
-                    printf("5: Return to Menu\n");
+                    printf("3: Forget Password\n");
+                    printf("4: Return to Menu\n");
                     printf("Select the desired item: ");
                 }
                 else
                 {
-                    system("cls");
+                    // system("cls");
                     printf("===============================\n");
-                    printf("1: Select service\n");
-                    printf("2: Scrape off tartar\n");
-                    printf("3: Tooth filling\n");
-                    printf("4: Tooth extraction\n");
-                    printf("5: Logout\n"); // Add a logout option
-
+                    printf("Select service\n");
+                    printf("1: Scrape off tartar\n");
+                    printf("2: Tooth filling\n");
+                    printf("3: Tooth extraction\n");
+                    printf("4: Logout\n");
                     printf("Select service item: ");
+                    scanf("%d", &case_service);
+                    switch (case_service)
+                    {
+                    case 1:
+                    {
+                        printf("Scrape off tartar");
+                    }
+                    break;
+                    case 2:
+                    {
+                        printf("Tooth filling");
+                    }
+                    break;
+                    case 3:
+                    {
+                        printf("Tooth extraction");
+                    }
+                    break;
+                    case 4:
+                    {
+
+                        if (isCustomerLoggedIn)
+                        {
+                            isCustomerLoggedIn = 0; // Logout by resetting the login flag
+                            printf("Logout successfuly!\n");
+                            printf("===============================\n");
+                            printf("Menu For Customer\n");
+                            printf("1: Login\n");
+                            printf("2: Register\n");
+                            printf("4: Forget Password\n");
+                            printf("5: Return to Menu\n");
+                            printf("Select the desired item: ");
+                        }
+                        else
+                        {
+                            printf("You are not logged in.\n");
+                        }
+                    }
+                    break;
+                    default:
+                        break;
+                    }
                 }
 
                 scanf("%d", &case_pub);
@@ -97,6 +138,7 @@ int main()
                             {
                                 found = 1;
                                 isCustomerLoggedIn = 1; // Set the login flag to true
+                                system("cls");
                                 printf("Login successful!\n");
                                 break;
                             }
@@ -116,30 +158,61 @@ int main()
                     break;
                 case 2:
                 {
-                    // ... registration logic ...
+                    {
+                        // add customer
+                        FILE *cusfile;
+                        cusfile = fopen("customer.csv", "a");
+
+                        if (!cusfile)
+                        {
+                            perror("Error opening file");
+                            exit(1); // Exit the program if the file couldn't be opened
+                        }
+
+                        // fgets(input, maxSize, stdin);
+
+                        printf("Register\n");
+                        printf("Username: ");
+                        scanf("%s", customer.username);
+                        printf("Password: ");
+                        scanf("%s", customer.password);
+                        printf("First Name: ");
+                        scanf("%s", customer.fname);
+                        printf("Last Name: ");
+                        scanf("%s", customer.lname);
+                        printf("Date of birth (dd/mm/yyyy): ");
+                        scanf("%s", customer.date);
+                        printf("Age: ");
+                        scanf("%d", &customer.age);
+                        printf("Id Card: ");
+                        scanf("%s", customer.id_card);
+                        printf("Phone Number: ");
+                        scanf("%s", customer.pnumber);
+                        printf("Address: ");
+                        scanf("%s", customer.address);
+
+                        // savefile
+                        fprintf(cusfile, "%s,%s,%s,%s,%s,%d,%s,%s,%s\n", customer.username, customer.password, customer.fname, customer.lname, customer.date, customer.age, customer.id_card, customer.password, customer.address);
+                        printf("Register Successfully\n");
+
+                        fclose(cusfile);
+                        return 0;
+                    }
                 }
                 break;
+                // case 3:
+                //    {}
+                //     break;
                 case 3:
-                    if (isCustomerLoggedIn)
-                    {
-                        isCustomerLoggedIn = 0; // Logout by resetting the login flag
-                        printf("Logout successful!\n");
-                    }
-                    else
-                    {
-                        printf("You are not logged in.\n");
-                    }
-                    break;
-                case 4:
                     // Implement forget password functionality
                     break;
-                case 5:
+                case 4:
                     // Return to the main menu by breaking out of the customer menu loop
                     break;
                 default:
                     printf("Invalid choice. Please try again.\n");
                 }
-                if (case_pub == 5)
+                if (case_pub == 4)
                 {
                     break; // Exit the customer menu loop when returning to the main menu
                 }
@@ -154,82 +227,79 @@ int main()
             switch (case_emp)
             {
             case 1:
-                if (head == NULL)
+            {
+
+                FILE *cusfile;
+                char *name;
+                cusfile = fopen("customer.csv", "r");
+
+                if (!cusfile)
                 {
-                    printf("Not Have Customer !\n");
+                    perror("Error opening file");
+                    exit(1); // Exit the program if the file couldn't be opened
                 }
                 else
                 {
-                    ptr = head;
-                    while (ptr != NULL)
+                    char customerfile[1024];
+                    int row = 0;
+                    int column = 0;
+                    while (fgets(customerfile, 1024, cusfile))
                     {
+                        column = 0;
+                        row++;
 
-                        printf("========================\n");
-                        printf("Name: %s %s\n", ptr->fname, ptr->lname);
-                        // printf("Desired service: %s\n", ptr->service);
-                        // printf("Date you want to reserve: %s\n", ptr->datein);
-                        // printf("Time you want to reserve: %s\n", ptr->timein);
-                        printf("Your reservation is complete.\n");
-                        ptr = ptr->next;
+                        if (row == 1)
+                            continue;
+                        char *value = strtok(customerfile, ",");
+                        while (value)
+                        {
+                            if (column == 0)
+                            {
+                                printf("username: ");
+                            }
+                            if (column == 1)
+                            {
+                                printf("\tpassword: ");
+                            }
+                            if (column == 2)
+                            {
+                                printf("\tfname: ");
+                            }
+                            if (column == 3)
+                            {
+                                printf("\tlname: ");
+                            }
+                            if (column == 4)
+                            {
+                                printf("\tdate: ");
+                            }
+                            if (column == 5)
+                            {
+                                printf("\tage: ");
+                            }
+                            if (column == 6)
+                            {
+                                printf("\tid_card: ");
+                            }
+                            if (column == 7)
+                            {
+                                printf("\tpnumber: ");
+                            }
+                            if (column == 8)
+                            {
+                                printf("\taddress: ");
+                            }
+                            printf("%s ", value);
+                            value = strtok(NULL, ",");
+                            column++;
+                        }
+                        printf("\n");
                     }
                 }
-                break;
+            }
+            break;
             case 2:
             {
-                system("cls");
-                printf("Book a dental appointment for the general public\n");
-                printf("First Name: ");
-                scanf("%s", customer.fname);
-                printf("Last Name: ");
-                scanf("%s", customer.lname);
-                printf("Date of birth (dd/mm/yyyy): ");
-                scanf("%s", customer.date);
-                printf("Age: ");
-                scanf("%d", &customer.age);
-                printf("Id Card: ");
-                scanf("%s", customer.id_card);
-                printf("Phone Number: ");
-                scanf("%s", customer.pnumber);
-                // printf("Desired service: ");
-                // scanf("%s", customer.service);
-                // printf("Date you want to reserve (dd/mm/yyyy): ");
-                // scanf("%s", customer.datein);
-                // printf("Time you want to reserve: (Open10.00 - close19.00): ");
-                // scanf("%s", customer.timein);
-
-                persons *q;
-                q = (persons *)malloc(sizeof(persons));
-                strcpy(q->fname, customer.fname);
-                strcpy(q->lname, customer.lname);
-                strcpy(q->date, customer.date);
-                q->age = customer.age;
-                strcpy(q->id_card, customer.id_card);
-                strcpy(q->pnumber, customer.pnumber);
-                // strcpy(q->service, customer.service);
-                // strcpy(q->datein, customer.datein);
-                // strcpy(q->timein, customer.timein);
-                q->next = NULL;
-
-                printf("Your add case is complete.\n");
-                // printf("Want to book for another service again? (y/n): ");
-                // scanf(" %c", &ch);
-                current = head;
-                if (head == NULL)
-                {
-                    head = q;
-                }
-                else
-                {
-                    while (current)
-                    {
-                        if (!current->next)
-                        {
-                            current->next = q;
-                            break;
-                        }
-                        current = current->next;
-                    }
-                }
             }
             default:
                 break;

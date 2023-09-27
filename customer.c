@@ -13,16 +13,17 @@ typedef struct customer
     char id_card[13];
     char pnumber[10];
     char address[100];
-    struct person *next;
+    struct customer *next;
 } customers;
 
 void customerMenu(int *isCustomerLoggedIn)
 {
     int login, logout;
+    char save_username[20], save_password[20], save_fname[50], save_lname[50];
+    char save_date[10], save_id_card[13], save_pnumber[10], save_address[100];
+    int save_age;
 
-    customers cust;
-    // char ch = 'y';
-    // int isCustomerLoggedIn = 0;
+    customers *cust = NULL, *current = NULL;
 
     while (1)
     {
@@ -41,6 +42,7 @@ void customerMenu(int *isCustomerLoggedIn)
         {
 
             printf("===============================\n");
+            printf("You: %s %s\n", current->fname, current->lname);
             printf("1:Logout\n");
             printf("2: eiei\n");
             printf("Select the logout item: ");
@@ -52,6 +54,8 @@ void customerMenu(int *isCustomerLoggedIn)
                 if (*isCustomerLoggedIn)
                 {
                     *isCustomerLoggedIn = 0;
+                    free(current);
+                    current = NULL;
                     printf("Logout Successfully!\n");
                     printf("===============================\n");
                     printf("Menu For Customer\n");
@@ -96,16 +100,33 @@ void customerMenu(int *isCustomerLoggedIn)
                 char line[1024];
                 while (fgets(line, sizeof(line), cusfile))
                 {
-                    char save_username[20], saved_password[20];
-                    sscanf(line, "%[^,],%[^,]", save_username, saved_password);
-                    if (strcmp(username, save_username) == 0 && strcmp(password, saved_password) == 0)
+                    // char save_username[20], saved_password[20];
+                    sscanf(line, "%[^,],%[^,],%[^,],%[^,],%9[^,],%d,%[^,],%[^,],%[^,\n]",
+                           save_username, save_password, save_fname, save_lname,
+                           save_date, &save_age, save_id_card, save_pnumber, save_address);
+
+                    if (strcmp(username, save_username) == 0 && strcmp(password, save_password) == 0)
                     {
                         found = 1;
                         *isCustomerLoggedIn = 1;
                         // system("cls");
+
+                        current = (customers *)malloc(sizeof(customers));
+                        if (current == NULL)
+                        {
+                            perror("current == NULL");
+                            exit(1);
+                        }
+                        strcpy(current->username, save_username);
+                        strcpy(current->password, save_password);
+                        strcpy(current->fname, save_fname);
+                        strcpy(current->lname, save_lname);
+                        strcpy(current->date, save_date);
+                        current->age = save_age;
+                        strcpy(current->id_card, save_id_card);
+                        strcpy(current->pnumber, save_pnumber);
+                        strcpy(current->address, save_address);
                         printf("Login Successfully!\n");
-                        printf("You %s\n", save_username);
-                        return save_username;
                         break;
                     }
                 }
@@ -135,32 +156,38 @@ void customerMenu(int *isCustomerLoggedIn)
                 }
 
                 // fgets(input, maxSize, stdin);
-
+                cust = (customers *)malloc(sizeof(customers));
+                if (cust == NULL)
+                {
+                    perror("cust == NULL");
+                    exit(1);
+                }
                 printf("Register\n");
                 printf("Username: ");
-                scanf("%s", cust.username);
+                scanf("%s", cust->username);
                 printf("Password: ");
-                scanf("%s", cust.password);
+                scanf("%s", cust->password);
                 printf("First Name: ");
-                scanf("%s", cust.fname);
+                scanf("%s", cust->fname);
                 printf("Last Name: ");
-                scanf("%s", cust.lname);
+                scanf("%s", cust->lname);
                 printf("Date of birth (dd/mm/yyyy): ");
-                scanf("%s", cust.date);
+                scanf("%s", cust->date);
                 printf("Age: ");
-                scanf("%d", &cust.age);
+                scanf("%d", &cust->age);
                 printf("Id Card: ");
-                scanf("%s", cust.id_card);
+                scanf("%s", cust->id_card);
                 printf("Phone Number: ");
-                scanf("%s", cust.pnumber);
+                scanf("%s", cust->pnumber);
                 printf("Address: ");
-                scanf("%s", cust.address);
+                scanf("%s", cust->address);
 
                 // savefile
-                fprintf(cusfile, "%s,%s,%s,%s,%s,%d,%s,%s,%s\n", cust.username, cust.password, cust.fname, cust.lname, cust.date, cust.age, cust.id_card, cust.password, cust.address);
+                fprintf(cusfile, "%s,%s,%s,%s,%s,%d,%s,%s,%s\n", cust->username, cust->password, cust->fname, cust->lname, cust->date, cust->age, cust->id_card, cust->pnumber, cust->address);
                 printf("Register Successfully\n");
 
                 fclose(cusfile);
+                free(cust);
                 break;
             }
         }

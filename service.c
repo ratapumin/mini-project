@@ -5,6 +5,7 @@
 void service(int *isService)
 {
     int case_service;
+    char save_username[20];
     char date_service[maxSize], time_service[maxSize];
     while (1)
     {
@@ -34,7 +35,7 @@ void service(int *isService)
             printf("Time: ");
             fgets(time_service, maxSize, stdin);
 
-            fprintf(servicefile, "%s,%s,%s,\n", username, date_service, time_service);
+            fprintf(servicefile, "%s,%s,%s,\n", save_username, date_service, time_service);
             prinf("Booking Successfully!!!\n");
             fclose(servicefile);
             break;

@@ -55,5 +55,12 @@
   "C_Cpp_Runner.useLeakSanitizer": false,
   "C_Cpp_Runner.showCompilationTime": false,
   "C_Cpp_Runner.useLinkTimeOptimization": false,
-  "C_Cpp.errorSquiggles": "disabled"
+  "C_Cpp.errorSquiggles": "disabled",
+  "files.associations": {
+    "index.html": "html",
+    "*.css": "css",
+    "App.js": "javascriptreact",
+    "*.py": "python",
+    "stdlib.h": "c"
+  }
 }

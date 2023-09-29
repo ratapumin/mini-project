@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 typedef struct customer
 {
     char username[20];
@@ -16,12 +15,14 @@ typedef struct customer
     struct customer *next;
 } customers;
 
+void service(int *isService, customers *current);
 void customerMenu(int *isCustomerLoggedIn)
 {
     int login, logout;
     char save_username[20], save_password[20], save_fname[50], save_lname[50];
     char save_date[10], save_id_card[13], save_pnumber[10], save_address[100];
     int save_age;
+    int isService = 0;
 
     customers *cust = NULL, *current = NULL;
 
@@ -41,9 +42,14 @@ void customerMenu(int *isCustomerLoggedIn)
         else
         {
 
+            if (*isCustomerLoggedIn)
+            {
+                service(&isService, *current);
+            }
             printf("===============================\n");
             printf("You: %s %s\n", current->fname, current->lname);
             printf("1:Logout\n");
+
             printf("2: eiei\n");
             printf("Select the logout item: ");
             scanf("%d", &logout);

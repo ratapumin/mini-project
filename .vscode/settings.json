@@ -62,5 +62,6 @@
     "App.js": "javascriptreact",
     "*.py": "python",
     "stdlib.h": "c"
-  }
+  },
+  "C_Cpp_Runner.msvcSecureNoWarnings": false
 }

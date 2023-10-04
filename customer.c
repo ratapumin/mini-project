@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 typedef struct customer
 {
     char username[20];
@@ -13,10 +14,28 @@ typedef struct customer
     char pnumber[10];
     char address[100];
     struct customer *next;
+
 } customers;
 
-void service(int *isService, customers *current);
-void customerMenu(int *isCustomerLoggedIn)
+typedef struct User
+{
+    char username[20];
+    char password[20];
+    char fname[50];
+    char lname[50];
+    char date[10];
+    int age;
+    char id_card[13];
+    char pnumber[10];
+    char address[100];
+
+} User;
+
+customers customerData;
+
+void service(int isService, customers *current);
+
+void customerMenu(int isCustomerLoggedIn)
 {
     int login, logout;
     char save_username[20], save_password[20], save_fname[50], save_lname[50];
@@ -31,7 +50,7 @@ void customerMenu(int *isCustomerLoggedIn)
         printf("===============================\n");
         printf("Menu For Customer\n");
 
-        if (!(*isCustomerLoggedIn))
+        if (!(isCustomerLoggedIn))
         {
             printf("1: Login\n");
             printf("2: Register\n");
@@ -42,24 +61,19 @@ void customerMenu(int *isCustomerLoggedIn)
         else
         {
 
-            if (*isCustomerLoggedIn)
-            {
-                service(&isService, *current);
-            }
             printf("===============================\n");
             printf("You: %s %s\n", current->fname, current->lname);
-            printf("1:Logout\n");
-
-            printf("2: eiei\n");
+            printf("1: Logout\n");
+            printf("2: Booking service\n");
             printf("Select the logout item: ");
             scanf("%d", &logout);
             switch (logout)
             {
             case 1:
             {
-                if (*isCustomerLoggedIn)
+                if (isCustomerLoggedIn)
                 {
-                    *isCustomerLoggedIn = 0;
+                    isCustomerLoggedIn = 0;
                     free(current);
                     current = NULL;
                     printf("Logout Successfully!\n");
@@ -75,9 +89,13 @@ void customerMenu(int *isCustomerLoggedIn)
             break;
             case 2:
             {
-                printf("loggout case\n");
-            }
 
+                if (isCustomerLoggedIn)
+                {
+                    service(isService, current);
+                }
+            }
+            break;
             default:
                 break;
             }
@@ -87,7 +105,7 @@ void customerMenu(int *isCustomerLoggedIn)
         {
         case 1:
         {
-            if (!(*isCustomerLoggedIn))
+            if (!(isCustomerLoggedIn))
             {
                 char username[20], password[20];
                 printf("Username: ");
@@ -114,7 +132,7 @@ void customerMenu(int *isCustomerLoggedIn)
                     if (strcmp(username, save_username) == 0 && strcmp(password, save_password) == 0)
                     {
                         found = 1;
-                        *isCustomerLoggedIn = 1;
+                        isCustomerLoggedIn = 1;
                         // system("cls");
 
                         current = (customers *)malloc(sizeof(customers));
@@ -132,7 +150,19 @@ void customerMenu(int *isCustomerLoggedIn)
                         strcpy(current->id_card, save_id_card);
                         strcpy(current->pnumber, save_pnumber);
                         strcpy(current->address, save_address);
+
+                        strcpy(customerData.username, current->username);
+                        strcpy(customerData.password, current->password);
+                        strcpy(customerData.fname, current->fname);
+                        strcpy(customerData.lname, current->lname);
+                        strcpy(customerData.date, current->date);
+                        customerData.age = save_age;
+                        strcpy(customerData.id_card, current->id_card);
+                        strcpy(customerData.pnumber, current->pnumber);
+                        strcpy(customerData.address, current->address);
+
                         printf("Login Successfully!\n");
+
                         break;
                     }
                 }

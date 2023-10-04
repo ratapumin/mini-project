@@ -2,45 +2,30 @@
 #include <stdlib.h>
 #include <string.h>
 #define maxSize 20
-typedef struct customer
-{
-    char username[20];
-    char password[20];
-    char fname[50];
-    char lname[50];
-    char date[10];
-    int age;
-    char id_card[13];
-    char pnumber[10];
-    char address[100];
-    struct customer *next;
-} customers;
-void service(int *isService, customers *current)
+void service(int isService, customers *current)
 {
     int case_service;
-    char save_username[20];
-    char save_id_card[13];
-    char date_service[maxSize], time_service[maxSize];
+    int day, month, year;
+    int hour, minute;
 
-    strcpy(save_username, current->username);
-    strcpy(save_id_card, current->id_card);
     while (1)
     {
         printf("===============================\n");
         printf("Menu Service\n");
-        printf("%s", save_username);
+        printf("%s %s\n", customerData.fname, customerData.lname);
         printf("1: Braces\n");
         printf("2: Dental filling\n");
         printf("3: Scrape off tartar\n");
         printf("4: Tooth extraction\n");
-        printf("Select Service item\n");
+        printf("5: Retrun to Customer Menu\n");
+        printf("Select Service item: ");
         scanf("%d", &case_service);
         switch (case_service)
         {
         case 1:
         {
             FILE *servicefile;
-            servicefile = fopen("service.csv", "w");
+            servicefile = fopen("service.csv", "a");
             if (!servicefile)
             {
                 perror("Can not opening customer.csv!");
@@ -48,20 +33,35 @@ void service(int *isService, customers *current)
             }
             printf("===============================\n");
             printf("Braces\n");
-            printf("Date: ");
-            fgets(date_service, maxSize, stdin);
-            printf("Time: ");
-            fgets(time_service, maxSize, stdin);
+            printf("Day (01/xx/xxxx): ");
+            scanf("%d", &day);
+            printf("Month (xx/01/xxxx): ");
+            scanf("%d", &month);
+            printf("Year (xx/xx/2001): ");
+            scanf("%d", &year);
+            printf("Hour: ");
+            scanf("%d", &hour);
+            printf("Minute:");
+            scanf("%d", &minute);
 
-            fprintf(servicefile, "%s,%s,%s,%s\n", save_id_card, save_username, date_service, time_service);
+            fprintf(servicefile, "%s,%s,%d,%d,%d,%d,%d\n", customerData.id_card, customerData.username, day, month, year, hour, minute);
             printf("Booking Successfully!!!\n");
             fclose(servicefile);
             break;
         }
         break;
-
+        case 2:
+        {
+            printf("2: Dental filling\n");
+        }
+        break;
+        case 5:
+            return;
         default:
-            break;
+        {
+            printf("Invalid choice. Please try again.\n");
+        }
+        break;
         }
     }
 }

@@ -1,27 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "customer.c"
+#include "service.c"
 
-void customerMenu(int *isCustomerLoggedIn);
-
-typedef struct person
-{
-    char username[20];
-    char password[20];
-    char fname[50];
-    char lname[50];
-    char date[10];
-    int age;
-    char id_card[13];
-    char pnumber[10];
-    char address[100];
-    struct person *next;
-} persons;
+void customerMenu(int isCustomerLoggedIn);
 
 int main()
 {
     int choice, case_emp, case_pub, case_service;
-    persons customer, *head = NULL, *current, *ptr;
+
     char ch = 'y';
     int isCustomerLoggedIn = 0;
 
@@ -41,7 +29,7 @@ int main()
         case 1:
         {
             printf("===============================\n");
-            customerMenu(&isCustomerLoggedIn);
+            customerMenu(isCustomerLoggedIn);
             break;
         }
         break;

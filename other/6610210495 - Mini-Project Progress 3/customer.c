@@ -11,36 +11,22 @@ typedef struct customer
     char date[10];
     int age;
     char id_card[13];
-    char pnumber[10];
+    int pnumber;
     char address[100];
     struct customer *next;
 
 } customers;
 
-typedef struct User
-{
-    char username[20];
-    char password[20];
-    char fname[50];
-    char lname[50];
-    char date[11];
-    int age;
-    char id_card[11];
-    char pnumber[11];
-    char address[100];
-
-} User;
-
 customers customerData;
 
-void service(int isService, customers *current);
+void service(int isService, customers customerData);
 void EditService(int isEditService, customers customerData);
 void customerMenu(int isCustomerLoggedIn)
 {
     int login, logout;
     char save_username[20], save_password[20], save_fname[50], save_lname[50];
-    char save_date[11], save_id_card[14], save_pnumber[11], save_address[100];
-    int save_age;
+    char save_date[10], save_id_card[13], save_address[100];
+    int save_age, save_pnumber;
     int isService = 0;
     int isEditService = 0;
 
@@ -59,13 +45,12 @@ void customerMenu(int isCustomerLoggedIn)
             printf("4: Return to Main Menu\n");
             printf("Select the desired item: ");
         }
-        else
+        else if (isCustomerLoggedIn)
         {
 
             printf("===============================\n");
-            printf("You: f%s l%s d%s\n", current->fname, current->lname, current->date);
-            printf("You: a%d pn%s p%s\n", current->age, current->pnumber, current->password);
-            printf("You: u%s ad%s i%s\n", current->username, current->address, current->id_card);
+            printf("You: %s %s\n", current->fname, current->lname);
+            // , current->id_card
             printf("1: Booking service\n");
             printf("2: Edit service\n");
             printf("3: View reservation list\n");
@@ -79,7 +64,7 @@ void customerMenu(int isCustomerLoggedIn)
 
                 if (isCustomerLoggedIn)
                 {
-                    service(isService, current);
+                    service(isService, customerData);
                 }
             }
             break;
@@ -132,10 +117,10 @@ void customerMenu(int isCustomerLoggedIn)
                 char line[1024];
                 while (fgets(line, sizeof(line), cusfile))
                 {
-                    // sscanf(line, "%[^,],%[^,],%[^,],%[^,],%10[^,],%[^,],%[^,],%[^,],%[^,\n]",
-                    sscanf(line, "%[^,],%[^,],%[^,],%[^,],%10[^,],%d,%s,%s,%[^,\n]",
+                    // char save_username[20], saved_password[20];
+                    sscanf(line, "%[^,],%[^,],%[^,],%[^,],%9[^,],%d,%[^,],%d,%[^,\n]",
                            save_username, save_password, save_fname, save_lname,
-                           save_date, &save_age, save_id_card, save_pnumber, save_address);
+                           save_date, &save_age, save_id_card, &save_pnumber, save_address);
 
                     if (strcmp(username, save_username) == 0 && strcmp(password, save_password) == 0)
                     {
@@ -156,7 +141,7 @@ void customerMenu(int isCustomerLoggedIn)
                         strcpy(current->date, save_date);
                         current->age = save_age;
                         strcpy(current->id_card, save_id_card);
-                        strcpy(current->pnumber, save_pnumber);
+                        current->pnumber = save_pnumber;
                         strcpy(current->address, save_address);
 
                         strcpy(customerData.username, current->username);
@@ -164,11 +149,10 @@ void customerMenu(int isCustomerLoggedIn)
                         strcpy(customerData.fname, current->fname);
                         strcpy(customerData.lname, current->lname);
                         strcpy(customerData.date, current->date);
-                        customerData.age = save_age;
+                        customerData.age = current->age;
                         strcpy(customerData.id_card, current->id_card);
-                        strcpy(customerData.pnumber, current->pnumber);
+                        customerData.pnumber = current->pnumber;
                         strcpy(customerData.address, current->address);
-
                         printf("Login Successfully!\n");
 
                         break;
@@ -221,13 +205,13 @@ void customerMenu(int isCustomerLoggedIn)
                 scanf("%d", &cust->age);
                 printf("Id Card: ");
                 scanf("%s", cust->id_card);
-                printf("Phone Number: ");
-                scanf("%s", cust->pnumber);
+                printf("Phone Number (+66): ");
+                scanf("%d", &cust->pnumber);
                 printf("Address: ");
                 scanf("%s", cust->address);
 
                 // savefile
-                fprintf(cusfile, "%s,%s,%s,%s,%s,%d,%s,%s,%s\n", cust->username, cust->password, cust->fname, cust->lname, cust->date, cust->age, cust->id_card, cust->pnumber, cust->address);
+                fprintf(cusfile, "%s,%s,%s,%s,%s,%d,%s,%d,%s\n", cust->username, cust->password, cust->fname, cust->lname, cust->date, cust->age, cust->id_card, cust->pnumber, cust->address);
                 printf("Register Successfully\n");
 
                 fclose(cusfile);

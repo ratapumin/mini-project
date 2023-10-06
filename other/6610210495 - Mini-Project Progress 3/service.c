@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #define maxSize 20
-void service(int isService, customers *current)
+void service(int isService, customers customerData)
 {
     int case_service, case_time;
     int day, month, year;
@@ -15,7 +15,7 @@ void service(int isService, customers *current)
     {
         printf("===============================\n");
         printf("Menu Service\n");
-        printf("%s %s %s\n", customerData.fname, customerData.lname, customerData.id_card);
+        printf("%s %s \n", customerData.fname, customerData.lname);
         printf("1: Braces\n");
         printf("2: Dental filling\n");
         printf("3: Scrape off tartar\n");

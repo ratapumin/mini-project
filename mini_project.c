@@ -3,6 +3,7 @@
 #include <string.h>
 #include "customer.c"
 #include "service.c"
+#include "editService.c"
 
 void customerMenu(int isCustomerLoggedIn);
 
@@ -46,12 +47,12 @@ int main()
 
                 FILE *cusfile;
                 char *name;
-                cusfile = fopen("customer.csv", "r");
+                cusfile = fopen("./CSV/customer.csv", "r");
 
                 if (!cusfile)
                 {
                     perror("Error opening file");
-                    exit(1); // Exit the program if the file couldn't be opened
+                    exit(1);
                 }
                 else
                 {
@@ -114,8 +115,7 @@ int main()
             }
             break;
             case 2:
-            {
-            }
+                break;
             default:
                 break;
             }
@@ -127,5 +127,4 @@ int main()
             break;
         }
     }
-    return 0;
 }

@@ -8,7 +8,7 @@ typedef struct customer
     char password[20];
     char fname[50];
     char lname[50];
-    char date[10];
+    char date[12];
     int age;
     char id_card[13];
     char pnumber[10];
@@ -23,10 +23,10 @@ typedef struct User
     char password[20];
     char fname[50];
     char lname[50];
-    char date[11];
+    char date[12];
     int age;
-    char id_card[11];
-    char pnumber[11];
+    char id_card[13];
+    char pnumber[10];
     char address[100];
 
 } User;
@@ -39,7 +39,7 @@ void customerMenu(int isCustomerLoggedIn)
 {
     int login, logout;
     char save_username[20], save_password[20], save_fname[50], save_lname[50];
-    char save_date[11], save_id_card[14], save_pnumber[11], save_address[100];
+    char save_date[12], save_id_card[13], save_pnumber[10], save_address[100];
     int save_age;
     int isService = 0;
     int isEditService = 0;
@@ -63,9 +63,7 @@ void customerMenu(int isCustomerLoggedIn)
         {
 
             printf("===============================\n");
-            printf("You: f%s l%s d%s\n", current->fname, current->lname, current->date);
-            printf("You: a%d pn%s p%s\n", current->age, current->pnumber, current->password);
-            printf("You: u%s ad%s i%s\n", current->username, current->address, current->id_card);
+
             printf("1: Booking service\n");
             printf("2: Edit service\n");
             printf("3: View reservation list\n");
@@ -132,9 +130,9 @@ void customerMenu(int isCustomerLoggedIn)
                 char line[1024];
                 while (fgets(line, sizeof(line), cusfile))
                 {
+                    // , save_fname, save_lname,save_date, &save_age, save_id_card, save_pnumber, save_address
                     // sscanf(line, "%[^,],%[^,],%[^,],%[^,],%10[^,],%[^,],%[^,],%[^,],%[^,\n]",
-                    sscanf(line, "%[^,],%[^,],%[^,],%[^,],%10[^,],%d,%s,%s,%[^,\n]",
-                           save_username, save_password, save_fname, save_lname,
+                    sscanf(line, "%[^,],%[^,],%[^,],%[^,],%10[^,],%d,%[^,],%[^,],%[^,\n]", save_username, save_password, save_fname, save_lname,
                            save_date, &save_age, save_id_card, save_pnumber, save_address);
 
                     if (strcmp(username, save_username) == 0 && strcmp(password, save_password) == 0)
@@ -170,6 +168,11 @@ void customerMenu(int isCustomerLoggedIn)
                         strcpy(customerData.address, current->address);
 
                         printf("Login Successfully!\n");
+                        printf("user: %s password: %s \n", customerData.username, customerData.password);
+                        printf("fname: %s lname: %s\n", customerData.fname, customerData.lname);
+                        printf("date: %s age: %d\n", customerData.date, customerData.age);
+                        printf("id_card: %s pnumber:(+66) %s\n", customerData.id_card, customerData.pnumber);
+                        printf("address: %s\n", customerData.address);
 
                         break;
                     }

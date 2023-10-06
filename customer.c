@@ -45,11 +45,11 @@ void customerMenu(int isCustomerLoggedIn)
             printf("4: Return to Main Menu\n");
             printf("Select the desired item: ");
         }
-        else
+        else if (isCustomerLoggedIn)
         {
 
             printf("===============================\n");
-            printf("You: %s %s %s\n", customerData.fname, customerData.lname, customerData.id_card);
+            printf("You: %s %s id: %s\n", current->fname, current->lname, current->id_card);
             printf("1: Booking service\n");
             printf("2: Edit service\n");
             printf("3: View reservation list\n");
@@ -84,13 +84,7 @@ void customerMenu(int isCustomerLoggedIn)
                     free(current);
                     current = NULL;
                     printf("Logout Successfully!\n");
-                    printf("===============================\n");
-                    printf("Menu For Customer\n");
-                    printf("1: Login\n");
-                    printf("2: Register\n");
-                    printf("3: Forget Password\n");
-                    printf("4: Return to Menu\n");
-                    printf("Select the desired item: ");
+                    return;
                 }
             }
             break;

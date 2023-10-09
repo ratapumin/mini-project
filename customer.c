@@ -1,17 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
+#include <conio.h>
 typedef struct customer
 {
     char username[20];
     char password[20];
     char fname[50];
     char lname[50];
-    char date[12];
+    int day;
+    int month;
+    int year;
     int age;
-    char id_card[13];
-    char pnumber[10];
+    char id_card[14];
+    char pnumber[11];
     char address[100];
     struct customer *next;
 
@@ -23,10 +25,12 @@ typedef struct User
     char password[20];
     char fname[50];
     char lname[50];
-    char date[12];
+    int day;
+    int month;
+    int year;
     int age;
-    char id_card[13];
-    char pnumber[10];
+    char id_card[14];
+    char pnumber[11];
     char address[100];
 
 } User;
@@ -35,12 +39,56 @@ customers customerData;
 
 void service(int isService, customers *current);
 void EditService(int isEditService, customers customerData);
+
+char *getTel(int pass_len)
+{
+    const int PASS_LEN = pass_len;
+    char *tel = (char *)malloc((PASS_LEN + 1) * sizeof(char)); // +1 for null terminator
+    char ch;
+    int i = 0;
+
+    while (i <= PASS_LEN)
+    {
+        ch = getch();
+
+        if (ch == 8)
+        {
+            if (i > 0)
+            {
+                i--;
+                printf("\b \b");
+            }
+        }
+        else if (ch >= '0' && ch <= '9' && i < PASS_LEN)
+        { // Only accept numeric characters and up to 6 digits
+            tel[i] = ch;
+            printf("%c", tel[i]);
+            i++;
+        }
+
+        if (ch == 13 && i < PASS_LEN)
+        {
+            break;
+        }
+
+        if (i == PASS_LEN && ch == 13)
+        {
+            tel[i] = '\0';
+            printf("\n");
+            break;
+        }
+    }
+
+    printf("\n");
+    return tel;
+}
 void customerMenu(int isCustomerLoggedIn)
 {
     int login, logout;
-    char save_username[20], save_password[20], save_fname[50], save_lname[50];
-    char save_date[12], save_id_card[13], save_pnumber[10], save_address[100];
-    int save_age;
+    // char save_username[20], save_password[20], save_fname[50], save_lname[50];
+    // char save_id_card[13], save_pnumber[10], save_address[100];
+    // int save_age;
+    // int save_day, save_month, save_year;
     int isService = 0;
     int isEditService = 0;
 
@@ -63,7 +111,8 @@ void customerMenu(int isCustomerLoggedIn)
         {
 
             printf("===============================\n");
-
+            printf("fname: %s lname: %s\n", customerData.fname, customerData.lname);
+            printf("id_card: %s \n", customerData.id_card);
             printf("1: Booking service\n");
             printf("2: Edit service\n");
             printf("3: View reservation list\n");
@@ -130,11 +179,67 @@ void customerMenu(int isCustomerLoggedIn)
                 char line[1024];
                 while (fgets(line, sizeof(line), cusfile))
                 {
-                    // , save_fname, save_lname,save_date, &save_age, save_id_card, save_pnumber, save_address
-                    // sscanf(line, "%[^,],%[^,],%[^,],%[^,],%10[^,],%[^,],%[^,],%[^,],%[^,\n]",
-                    sscanf(line, "%[^,],%[^,],%[^,],%[^,],%10[^,],%d,%[^,],%[^,],%[^,\n]", save_username, save_password, save_fname, save_lname,
-                           save_date, &save_age, save_id_card, save_pnumber, save_address);
 
+                    char *token = strtok(line, ",");
+                    char *save_username, *save_password, *save_fname, *save_lname, *save_id_card, *save_pnumber, *save_address;
+                    int save_day, save_month, save_year, save_age;
+                    if (token != NULL)
+                    {
+                        save_username = strdup(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_password = strdup(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_fname = strdup(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_lname = strdup(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_day = atoi(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_month = atoi(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_year = atoi(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_age = atoi(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_id_card = strdup(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_pnumber = strdup(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_address = strdup(token);
+                        // token = strtok(NULL, ",");
+                    }
+
+                    
                     if (strcmp(username, save_username) == 0 && strcmp(password, save_password) == 0)
                     {
                         found = 1;
@@ -151,26 +256,35 @@ void customerMenu(int isCustomerLoggedIn)
                         strcpy(current->password, save_password);
                         strcpy(current->fname, save_fname);
                         strcpy(current->lname, save_lname);
-                        strcpy(current->date, save_date);
+                        current->day = save_day;
+                        current->month = save_month;
+                        current->year = save_year;
                         current->age = save_age;
                         strcpy(current->id_card, save_id_card);
                         strcpy(current->pnumber, save_pnumber);
                         strcpy(current->address, save_address);
 
+                        /* --------------------------------------------------- */
+
                         strcpy(customerData.username, current->username);
                         strcpy(customerData.password, current->password);
                         strcpy(customerData.fname, current->fname);
                         strcpy(customerData.lname, current->lname);
-                        strcpy(customerData.date, current->date);
+                        customerData.day = save_day;
+                        customerData.month = save_month;
+                        customerData.year = save_year;
                         customerData.age = save_age;
+
                         strcpy(customerData.id_card, current->id_card);
                         strcpy(customerData.pnumber, current->pnumber);
                         strcpy(customerData.address, current->address);
 
+                        // system("cls");
+                        printf("===============================\n");
                         printf("Login Successfully!\n");
                         printf("user: %s password: %s \n", customerData.username, customerData.password);
                         printf("fname: %s lname: %s\n", customerData.fname, customerData.lname);
-                        printf("date: %s age: %d\n", customerData.date, customerData.age);
+                        printf("day: %d month: %d year: %d age: %d\n", customerData.day, customerData.month, customerData.year, customerData.age);
                         printf("id_card: %s pnumber:(+66) %s\n", customerData.id_card, customerData.pnumber);
                         printf("address: %s\n", customerData.address);
 
@@ -210,6 +324,7 @@ void customerMenu(int isCustomerLoggedIn)
                     exit(1);
                 }
                 printf("Register\n");
+
                 printf("Username: ");
                 scanf("%s", cust->username);
                 printf("Password: ");
@@ -218,19 +333,39 @@ void customerMenu(int isCustomerLoggedIn)
                 scanf("%s", cust->fname);
                 printf("Last Name: ");
                 scanf("%s", cust->lname);
-                printf("Date of birth (dd/mm/yyyy): ");
-                scanf("%s", cust->date);
+                printf("Date of birth (dd/mm/yyyy)\n");
+                printf("Day(01/mm/yyyy): ");
+                scanf("%d", &cust->day);
+                printf("Month(dd/01/yyyy): ");
+                scanf("%d", &cust->month);
+                printf("Year(dd/mm/2543): ");
+                scanf("%d", &cust->year);
                 printf("Age: ");
                 scanf("%d", &cust->age);
                 printf("Id Card: ");
-                scanf("%s", cust->id_card);
+                strcpy(cust->id_card, getTel(13));
                 printf("Phone Number: ");
-                scanf("%s", cust->pnumber);
+                strcpy(cust->pnumber, getTel(10));
                 printf("Address: ");
                 scanf("%s", cust->address);
 
+                printf("fname: %s lname: %s\n", cust->fname, cust->lname);
+                printf("id_card: %s pnumber:(+66) %s\n", cust->id_card, cust->pnumber);
+                printf("address: %s\n", cust->address);
+
                 // savefile
-                fprintf(cusfile, "%s,%s,%s,%s,%s,%d,%s,%s,%s\n", cust->username, cust->password, cust->fname, cust->lname, cust->date, cust->age, cust->id_card, cust->pnumber, cust->address);
+                fprintf(cusfile, "%s,%s,%s,%s,%d,%d,%d,%d,%s,%s,%s\n",
+                        cust->username,
+                        cust->password,
+                        cust->fname,
+                        cust->lname,
+                        cust->day,
+                        cust->month,
+                        cust->year,
+                        cust->age,
+                        cust->id_card,
+                        cust->pnumber,
+                        cust->address);
                 printf("Register Successfully\n");
 
                 fclose(cusfile);

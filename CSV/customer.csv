@@ -1,4 +1,4 @@
-username,password,fname,lname,date,age,id_card,pnumber,address,,
-admin,admin,ratapumin,naudom,10/12/2543,23,1909802511927,621645650,hatyai
-thitima,1234,thitima,prabantaw,03/09/2546,20,3909802491658,935166934,khonkaen
-1,1,1,1,1,1,1,1,1
+username,password,fname,lname,day,month,year,age,id_card,pnumber,address,
+admin,admin,ratapumin,naudom,10,12,2543,23,1909802511927,0621645650,hatyai
+thitima,1234,thitima,prabantaw,3,9,2546,20,1903625185478,0625185475,eieieiei
+111,111,111,111,15,4,2549,16,1902515485945,0621115485,eieieieiei

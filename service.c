@@ -7,15 +7,16 @@ void service(int isService, customers *current)
     int case_service, case_time;
     int day, month, year;
     int save_day, save_month, save_year;
+    char save_id_card[14], save_username[30];
+
     float add_time;
     float save_time;
-    // char save_id_card[13];
-    // strcpy(save_id_card, customerData.id_card);
+
     while (1)
     {
         printf("===============================\n");
         printf("Menu Service\n");
-        printf("%s %s %s\n", customerData.fname, customerData.lname, customerData.id_card);
+        printf("%s %s id:%s\n", customerData.fname, customerData.lname, customerData.id_card);
         printf("1: Braces\n");
         printf("2: Dental filling\n");
         printf("3: Scrape off tartar\n");
@@ -74,7 +75,8 @@ void service(int isService, customers *current)
                 char line[1024];
                 while (fgets(line, sizeof(line), servicefile))
                 {
-                    sscanf(line, "%d,%d,%d,%f", &save_day, &save_month, &save_year, &save_time);
+                    sscanf(line, "%[^,],%[^,],%d,%d,%d,%f", save_id_card, save_username, 
+                    &save_day, &save_month, &save_year, &save_time);
                     if (add_time == save_time && day == save_day && month == save_month && year == save_year)
                     {
                         found = 1;

@@ -120,7 +120,7 @@ void EditService(int isEditService, customers customarData)
                 printf("===============================================\n");
                 printf("ID Card: %s\n", servicelist->data.id_card);
                 printf("Username: %s\n", servicelist->data.username);
-                printf("Day/Month/Year: %d %d %d\n",
+                printf("Day/Month/Year: %d/%d/%d\n",
                        servicelist->data.day, servicelist->data.month, servicelist->data.year);
                 printf("Timer Service: %.2f\n", servicelist->data.time);
                 printf("===============================================\n");
@@ -175,114 +175,67 @@ void EditService(int isEditService, customers customarData)
                         printf("===============================================\n");
 
                         printf("===============================================\n");
-                        printf("|                 EDIT BOOKING                 \n");
+                        printf("|                 EDIT BOOKING                 |\n");
                         printf("===============================================\n");
                         printf("ID Card: %s\n", ptr->data.id_card);
                         printf("Username: %s\n", ptr->data.username);
                         printf("Date, month, year that you want to change\n");
                         printf("Day: ");
-                        scanf("%d", &ptr->data.day);
+                        scanf("%d", &day);
                         printf("Month: ");
-                        scanf("%d", &ptr->data.month);
+                        scanf("%d", &month);
                         printf("Year: ");
-                        scanf("%d", &ptr->data.year);
+                        scanf("%d", &year);
+
                         printf("Time to change\n");
                         printf("Open 10.00 - 19.00\n");
-                        printf("1: 10.00\n");
-                        printf("2: 10.30\n");
-                        printf("3: 11.00\n");
-                        printf("4: 11.30\n");
-                        printf("5: 13.00\n");
-                        printf("6: 13.30\n");
-                        printf("7: 14.00\n");
-                        printf("8: 14.30\n");
-                        printf("9: 15.00\n");
-                        printf("10: 15.30\n");
-                        printf("11: 16.00\n");
-                        printf("12: 16.30\n");
-                        printf("13: 17.00\n");
-                        printf("14: 17.30\n");
-                        printf("15: 18.00\n");
-                        printf("16: 18.30\n");
-                        printf("Please select a time period: ");
-                        scanf("%d", &case_time);
-                        switch (case_time)
-                        {
-                        case 1:
-                        {
-                            add_time = 15.30;
-                            FILE *servicefile;
-                            servicefile = fopen("./CSV/service.csv", "r");
-                            if (!servicefile)
-                            {
-                                perror("Can not opening customer.csv!");
-                                exit(1);
-                            }
-                            int found = 0;
-                            char line[1024];
-                            while (fgets(line, sizeof(line), servicefile))
-                            {
-                                // SCAN IN CSV
-                                sscanf(line, "%[^,],%[^,],%d,%d,%d,%f",
-                                       save_id_card,
-                                       save_username,
-                                       &save_day, &save_month,
-                                       &save_year, &save_time);
-                                if (add_time == save_time && day == save_day && month == save_month && year == save_year)
-                                {
-                                    found = 1;
-                                    printf("%d\n", found);
-                                    printf("This time slot has been reserved.\n");
-                                    break;
-                                }
-                            }
-                            fclose(servicefile);
-
-                            if (!found)
-                            {
-                                // PUT IN CSV
-                                printf("%d\n", found);
-                                FILE *servicefile;
-                                servicefile = fopen("./CSV/service.csv", "a");
-                                if (!servicefile)
-                                {
-                                    perror("Error opening file");
-                                    exit(1);
-                                }
-                                fprintf(servicefile, "%s,%s,%d,%d,%d,%.2f\n",
-                                        ptr->data.id_card,
-                                        ptr->data.username,
-                                        ptr->data.day,
-                                        ptr->data.month,
-                                        ptr->data.year,
-                                        add_time);
-                                printf("Booking Successfully!!!\n");
-                                printf("%.2f\n", add_time);
-                                fclose(servicefile);
-                                printf("%s %s\n", customerData.fname, customerData.lname);
-                            }
-                        }
+                        printf("time: ");
+                        scanf("%f", &add_time);
+                        ptr->data.day = day;
+                        ptr->data.month = month;
+                        ptr->data.year = year;
+                        ptr->data.time = add_time;
                         break;
-
-                        default:
-                            break;
-                        }
                     }
-
                     ptr = ptr->next;
                 }
             }
-        }
-        ptr = head;
-        while (ptr != NULL)
-        {
-            ServiceList *p = ptr;
-            ptr = ptr->next;
-            free(p);
-            
+            if (current_booking == 0)
+            {
+                printf("Can't find Your Booking!!\n");
+            }
+            else
+            {
+                FILE *editservicefile;
+                editservicefile = fopen("./CSV/service.csv", "w");
+                if (!editservicefile)
+                {
+                    perror("Error opening file\n");
+                    exit(1);
+                }
+                fprintf(servicefile, "id_card,username,date,month,year,time\n");
+                ptr = head;
+                while (ptr != NULL)
+                {
+                    fprintf(editservicefile, "%s,%s,%d,%d,%d,%.2f\n",
+                            ptr->data.id_card,
+                            ptr->data.username,
+                            ptr->data.day,
+                            ptr->data.month,
+                            ptr->data.year,
+                            ptr->data.time);
+                    ptr = ptr->next;
+                }
+                fclose(editservicefile);
+                ptr = head;
+                while (ptr != NULL)
+                {
+                    ServiceList *temp = ptr;
+                    ptr = ptr->next;
+                    free(temp);
+                }
+                printf("Booking Successfully Updated!!!\n");
+            }
         }
     }
 } // end
-
-//  if (strcmp(customerData.id_card, ptr->data.id_card) == 0 &&
-//                 strcmp(customerData.username, ptr->data.username) == 0)

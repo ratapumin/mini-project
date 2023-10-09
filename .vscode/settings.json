@@ -64,6 +64,6 @@
     "stdlib.h": "c"
   },
   "C_Cpp_Runner.msvcSecureNoWarnings": false,
-  "workbench.colorTheme": "Bright Colors",
+  "workbench.colorTheme": "Visual Studio Dark - C++",
   "workbench.preferredDarkColorTheme": "Default Dark+"
 }

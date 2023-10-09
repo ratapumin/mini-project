@@ -149,48 +149,53 @@ void EditService(int isEditService, customers customarData)
         }
         else
         {
-              
-            {
+
             int current_booking = 0;
             ptr = head;
-           
-            while (ptr != NULL )
-            {
-                if (strcmp(customerData.id_card, ptr->data.id_card) == 0 && 
-                strcmp(customerData.username, ptr->data.username) == 0)
-                {
-                if (i == case_edit)
-                {
-                    // system("cls");
-                    printf("===============================================\n");
-                    printf("BOOKING = %d\n", case_edit);
-                    printf("===============================================\n");
-                    printf("ID Card: %s\n", ptr->data.id_card);
-                    printf("Username: %s\n", ptr->data.username);
-                    printf("Day/Month/Year: %d %d %d\n",
-                           ptr->data.day, ptr->data.month, ptr->data.year);
-                    printf("Timer Service: %.2f\n", ptr->data.time);
-                    printf("===============================================\n");
 
-                    printf("===============================================\n");
-                    printf("|                 EDIT BOOKING                 \n");
-                    printf("===============================================\n");
-                    printf("ID Card: %s\n", servicelist->data.id_card);
-                    printf("Username: %s\n", servicelist->data.username);
-                    printf("Date, month, year that you want to change\n");
-                    printf("Day: ");
-                    scanf("%d", &servicelist->data.day);
-                    printf("Month: ");
-                    scanf("%d", &servicelist->data.month);
-                    printf("Year: ");
-                    scanf("%d", &servicelist->data.year);
-                    printf("Time to change\n");
-                    break;
+            while (ptr != NULL)
+            {
+                if (strcmp(customerData.id_card, ptr->data.id_card) == 0 &&
+                    strcmp(customerData.username, ptr->data.username) == 0)
+                    current_booking++;
+
+                {
+
+                    if (current_booking == case_edit)
+                    {
+                        // system("cls");
+                        printf("===============================================\n");
+                        printf("BOOKING = %d\n", case_edit);
+                        printf("===============================================\n");
+                        printf("ID Card: %s\n", ptr->data.id_card);
+                        printf("Username: %s\n", ptr->data.username);
+                        printf("Day/Month/Year: %d/%d/%d\n",
+                               ptr->data.day, ptr->data.month, ptr->data.year);
+                        printf("Timer Service: %.2f\n", ptr->data.time);
+                        printf("===============================================\n");
+
+                        printf("===============================================\n");
+                        printf("|                 EDIT BOOKING                 \n");
+                        printf("===============================================\n");
+                        printf("ID Card: %s\n", servicelist->data.id_card);
+                        printf("Username: %s\n", servicelist->data.username);
+                        printf("Date, month, year that you want to change\n");
+                        printf("Day: ");
+                        scanf("%d", &servicelist->data.day);
+                        printf("Month: ");
+                        scanf("%d", &servicelist->data.month);
+                        printf("Year: ");
+                        scanf("%d", &servicelist->data.year);
+                        printf("Time to change\n");
+                        break;
+                    }
+
+                    ptr = ptr->next;
                 }
-            current_booking++;
-            ptr=ptr->next;
             }
         }
-        }
     }
-}
+} // end
+
+//  if (strcmp(customerData.id_card, ptr->data.id_card) == 0 &&
+//                 strcmp(customerData.username, ptr->data.username) == 0)

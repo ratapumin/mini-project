@@ -149,8 +149,7 @@ void EditService(int isEditService, customers customarData)
         }
         else
         {
-              if (strcmp(customerData.id_card, servicelist->data.id_card) == 0 &&
-                strcmp(customarData.username, servicelist->data.username) == 0)
+              
             {
             int current_booking = 0;
             ptr = head;

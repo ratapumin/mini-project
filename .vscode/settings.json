@@ -63,5 +63,7 @@
     "*.py": "python",
     "stdlib.h": "c"
   },
-  "C_Cpp_Runner.msvcSecureNoWarnings": false
+  "C_Cpp_Runner.msvcSecureNoWarnings": false,
+  "workbench.colorTheme": "Bright Colors",
+  "workbench.preferredDarkColorTheme": "Default Dark+"
 }

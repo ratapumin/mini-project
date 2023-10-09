@@ -154,10 +154,12 @@ void EditService(int isEditService, customers customarData)
             int current_booking = 0;
             ptr = head;
            
-            while (ptr != NULL && strcmp(customerData.id_card, servicelist->data.id_card) == 0 &&
-                strcmp(customarData.username, servicelist->data.username) == 0 )
+            while (ptr != NULL )
             {
-                if (current_booking == case_edit)
+                if (strcmp(customerData.id_card, ptr->data.id_card) == 0 && 
+                strcmp(customerData.username, ptr->data.username) == 0)
+                {
+                if (i == case_edit)
                 {
                     // system("cls");
                     printf("===============================================\n");

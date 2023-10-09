@@ -239,8 +239,8 @@ void customerMenu(int isCustomerLoggedIn)
                         // token = strtok(NULL, ",");
                     }
 
-                    
-                    if (strcmp(username, save_username) == 0 && strcmp(password, save_password) == 0)
+                    if (strcmp(username, save_username) == 0 &&
+                        strcmp(password, save_password) == 0)
                     {
                         found = 1;
                         isCustomerLoggedIn = 1;

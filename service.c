@@ -75,8 +75,8 @@ void service(int isService, customers *current)
                 char line[1024];
                 while (fgets(line, sizeof(line), servicefile))
                 {
-                    sscanf(line, "%[^,],%[^,],%d,%d,%d,%f", save_id_card, save_username, 
-                    &save_day, &save_month, &save_year, &save_time);
+                    sscanf(line, "%[^,],%[^,],%d,%d,%d,%f", save_id_card, save_username,
+                           &save_day, &save_month, &save_year, &save_time);
                     if (add_time == save_time && day == save_day && month == save_month && year == save_year)
                     {
                         found = 1;
@@ -780,7 +780,7 @@ void service(int isService, customers *current)
         }
         break;
         case 5:
-            return;
+            customerMenu(1);
         default:
         {
             printf("Invalid choice. Please try again.\n");

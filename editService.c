@@ -27,7 +27,7 @@ void EditService(int isEditService, customers customarData)
     int save_day, save_month, save_year;
     float add_time, save_time;
     int found = 0;
-    int i = 1;
+    int i = 0;
 
     ServiceData *servicedata = NULL;
     ServiceList *servicelist = NULL, *head = NULL, *current = NULL, *ptr = NULL;
@@ -44,12 +44,18 @@ void EditService(int isEditService, customers customarData)
     char line[1024];
     int row = 0;
     int column = 0;
-
     while (fgets(line, sizeof(line), editservicefile))
     {
+        // if (row == 0)
+        // {
+        //     strtok(line, ",");
+        //     row++;
+        //     continue;
+        // }
         char *token = strtok(line, ",");
         char *save_id_card, *save_username;
         int save_day, save_month, save_year, save_time;
+
         if (token != NULL)
         {
             save_id_card = strdup(token);
@@ -116,7 +122,7 @@ void EditService(int isEditService, customers customarData)
             {
                 found = 1;
                 printf("===============================================\n");
-                printf("BOOKING = %d\n", i);
+                printf("BOOKING = %d\n", i + 1);
                 printf("===============================================\n");
                 printf("ID Card: %s\n", servicelist->data.id_card);
                 printf("Username: %s\n", servicelist->data.username);
@@ -149,6 +155,24 @@ void EditService(int isEditService, customers customarData)
         }
         else
         {
+            // i = 0;
+
+            // printf("head\n");
+            // while (head != NULL)
+            // {
+
+            //     printf("===============================================\n");
+            //     printf("BOOKING = %d\n", i);
+            //     printf("===============================================\n");
+            //     printf("ID Card: %s\n", head->data.id_card);
+            //     printf("Username: %s\n", head->data.username);
+            //     printf("Day/Month/Year: %d/%d/%d\n",
+            //            head->data.day, head->data.month, head->data.year);
+            //     printf("Timer Service: %.2f\n", head->data.time);
+            //     printf("===============================================\n");
+            //     head = head->next;
+            //     i++;
+            // }
 
             int current_booking = 0;
             ptr = head;
@@ -163,7 +187,7 @@ void EditService(int isEditService, customers customarData)
 
                     if (current_booking == case_edit)
                     {
-                        // system("cls");
+                        system("cls");
                         printf("===============================================\n");
                         printf("BOOKING = %d\n", case_edit);
                         printf("===============================================\n");
@@ -195,47 +219,48 @@ void EditService(int isEditService, customers customarData)
                         ptr->data.month = month;
                         ptr->data.year = year;
                         ptr->data.time = add_time;
-                        break;
                     }
                     ptr = ptr->next;
                 }
-            }
-            if (current_booking == 0)
-            {
-                printf("Can't find Your Booking!!\n");
-            }
-            else
-            {
+
                 FILE *editservicefile;
                 editservicefile = fopen("./CSV/service.csv", "w");
                 if (!editservicefile)
                 {
-                    perror("Error opening file\n");
+                    perror("Error opening file");
                     exit(1);
                 }
-                fprintf(editservicefile, "id_card,username,date,month,year,time\n");
-                ptr = head;
-                while (ptr != NULL)
+
+                ServiceList *current = head;
+                while (current != NULL)
                 {
-                    fprintf(editservicefile, "%s,%s,%d,%d,%d,%.2f\n",
-                            ptr->data.id_card,
-                            ptr->data.username,
-                            ptr->data.day,
-                            ptr->data.month,
-                            ptr->data.year,
-                            ptr->data.time);
-                    ptr = ptr->next;
+                    fprintf(editservicefile, "%s,%s,%d,%d,%d,%.2f\n", current->data.id_card, current->data.username,
+                            current->data.day, current->data.month, current->data.year, current->data.time);
+                    current = current->next;
                 }
+
                 fclose(editservicefile);
-                ptr = head;
-                while (ptr != NULL)
-                {
-                    ServiceList *temp = ptr;
-                    ptr = ptr->next;
-                    free(temp);
-                }
-                printf("Booking Successfully Updated!!!\n");
+
+                printf("Booking updated successfully!\n");
             }
+            // i = 1;
+
+            // while (ptr != NULL)
+            // {
+
+            //     printf("===============================================\n");
+            //     printf("BOOKING = %d\n", i);
+            //     printf("===============================================\n");
+            //     printf("ID Card: %s\n", ptr->data.id_card);
+            //     printf("Username: %s\n", ptr->data.username);
+            //     printf("Day/Month/Year: %d/%d/%d\n",
+            //            ptr->data.day, ptr->data.month, ptr->data.year);
+            //     printf("Timer Service: %.2f\n", ptr->data.time);
+            //     printf("===============================================\n");
+            //     ptr = ptr->next;
+            //     i++;
+            // }
         }
     }
+
 } // end

@@ -213,7 +213,7 @@ void EditService(int isEditService, customers customarData)
                     perror("Error opening file\n");
                     exit(1);
                 }
-                fprintf(servicefile, "id_card,username,date,month,year,time\n");
+                fprintf(editservicefile, "id_card,username,date,month,year,time\n");
                 ptr = head;
                 while (ptr != NULL)
                 {

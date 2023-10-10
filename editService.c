@@ -155,25 +155,6 @@ void EditService(int isEditService, customers customarData)
         }
         else
         {
-            // i = 0;
-
-            // printf("head\n");
-            // while (head != NULL)
-            // {
-
-            //     printf("===============================================\n");
-            //     printf("BOOKING = %d\n", i);
-            //     printf("===============================================\n");
-            //     printf("ID Card: %s\n", head->data.id_card);
-            //     printf("Username: %s\n", head->data.username);
-            //     printf("Day/Month/Year: %d/%d/%d\n",
-            //            head->data.day, head->data.month, head->data.year);
-            //     printf("Timer Service: %.2f\n", head->data.time);
-            //     printf("===============================================\n");
-            //     head = head->next;
-            //     i++;
-            // }
-
             int current_booking = 0;
             ptr = head;
 
@@ -183,84 +164,103 @@ void EditService(int isEditService, customers customarData)
                     strcmp(customerData.username, ptr->data.username) == 0)
                     current_booking++;
 
+                if (current_booking == case_edit)
                 {
+                    system("cls");
+                    printf("===============================================\n");
+                    printf("BOOKING = %d\n", case_edit);
+                    printf("===============================================\n");
+                    printf("ID Card: %s\n", ptr->data.id_card);
+                    printf("Username: %s\n", ptr->data.username);
+                    printf("Day/Month/Year: %d/%d/%d\n",
+                           ptr->data.day, ptr->data.month, ptr->data.year);
+                    printf("Timer Service: %.2f\n", ptr->data.time);
+                    printf("===============================================\n");
 
-                    if (current_booking == case_edit)
-                    {
-                        system("cls");
-                        printf("===============================================\n");
-                        printf("BOOKING = %d\n", case_edit);
-                        printf("===============================================\n");
-                        printf("ID Card: %s\n", ptr->data.id_card);
-                        printf("Username: %s\n", ptr->data.username);
-                        printf("Day/Month/Year: %d/%d/%d\n",
-                               ptr->data.day, ptr->data.month, ptr->data.year);
-                        printf("Timer Service: %.2f\n", ptr->data.time);
-                        printf("===============================================\n");
+                    printf("===============================================\n");
+                    printf("|                 EDIT BOOKING                 |\n");
+                    printf("===============================================\n");
+                    printf("ID Card: %s\n", ptr->data.id_card);
+                    printf("Username: %s\n", ptr->data.username);
+                    printf("Date, month, year that you want to change\n");
+                    printf("Day: ");
+                    scanf("%d", &day);
+                    printf("Month: ");
+                    scanf("%d", &month);
+                    printf("Year: ");
+                    scanf("%d", &year);
 
-                        printf("===============================================\n");
-                        printf("|                 EDIT BOOKING                 |\n");
-                        printf("===============================================\n");
-                        printf("ID Card: %s\n", ptr->data.id_card);
-                        printf("Username: %s\n", ptr->data.username);
-                        printf("Date, month, year that you want to change\n");
-                        printf("Day: ");
-                        scanf("%d", &day);
-                        printf("Month: ");
-                        scanf("%d", &month);
-                        printf("Year: ");
-                        scanf("%d", &year);
+                    printf("Time to change\n");
+                    printf("Open 10.00 - 19.00\n");
+                    printf("time: ");
+                    scanf("%f", &add_time);
+                    ptr->data.day = day;
+                    ptr->data.month = month;
+                    ptr->data.year = year;
+                    ptr->data.time = add_time;
 
-                        printf("Time to change\n");
-                        printf("Open 10.00 - 19.00\n");
-                        printf("time: ");
-                        scanf("%f", &add_time);
-                        ptr->data.day = day;
-                        ptr->data.month = month;
-                        ptr->data.year = year;
-                        ptr->data.time = add_time;
-                    }
-                    ptr = ptr->next;
+                    break;
                 }
-
-                FILE *editservicefile;
-                editservicefile = fopen("./CSV/service.csv", "w");
-                if (!editservicefile)
-                {
-                    perror("Error opening file");
-                    exit(1);
-                }
-
-                ServiceList *current = head;
-                while (current != NULL)
-                {
-                    fprintf(editservicefile, "%s,%s,%d,%d,%d,%.2f\n", current->data.id_card, current->data.username,
-                            current->data.day, current->data.month, current->data.year, current->data.time);
-                    current = current->next;
-                }
-
-                fclose(editservicefile);
-
-                printf("Booking updated successfully!\n");
+                ptr = ptr->next;
             }
-            // i = 1;
+            FILE *editservicefile;
+            editservicefile = fopen("./CSV/service.csv", "w");
+            if (!editservicefile)
+            {
+                perror("Error opening file");
+                exit(1);
+            }
 
-            // while (ptr != NULL)
-            // {
+            ServiceList *current = head;
+            while (current != NULL)
+            {
+                fprintf(editservicefile, "%s,%s,%d,%d,%d,%.2f\n", current->data.id_card, current->data.username,
+                        current->data.day, current->data.month, current->data.year, current->data.time);
+                current = current->next;
+            }
 
-            //     printf("===============================================\n");
-            //     printf("BOOKING = %d\n", i);
-            //     printf("===============================================\n");
-            //     printf("ID Card: %s\n", ptr->data.id_card);
-            //     printf("Username: %s\n", ptr->data.username);
-            //     printf("Day/Month/Year: %d/%d/%d\n",
-            //            ptr->data.day, ptr->data.month, ptr->data.year);
-            //     printf("Timer Service: %.2f\n", ptr->data.time);
-            //     printf("===============================================\n");
-            //     ptr = ptr->next;
-            //     i++;
-            // }
+            fclose(editservicefile);
+
+            printf("Booking updated successfully!\n");
+            customerMenu(1);
         }
     }
 
 } // end
+
+// i = 0;
+
+// printf("head\n");
+// while (head != NULL)
+// {
+
+//     printf("===============================================\n");
+//     printf("BOOKING = %d\n", i);
+//     printf("===============================================\n");
+//     printf("ID Card: %s\n", head->data.id_card);
+//     printf("Username: %s\n", head->data.username);
+//     printf("Day/Month/Year: %d/%d/%d\n",
+//            head->data.day, head->data.month, head->data.year);
+//     printf("Timer Service: %.2f\n", head->data.time);
+//     printf("===============================================\n");
+//     head = head->next;
+//     i++;
+// }
+
+// i = 1;
+// ptr = head;
+// while (ptr != NULL)
+// {
+
+//     printf("===============================================\n");
+//     printf("BOOKING = %d\n", i);
+//     printf("===============================================\n");
+//     printf("ID Card: %s\n", ptr->data.id_card);
+//     printf("Username: %s\n", ptr->data.username);
+//     printf("Day/Month/Year: %d/%d/%d\n",
+//            ptr->data.day, ptr->data.month, ptr->data.year);
+//     printf("Timer Service: %.2f\n", ptr->data.time);
+//     printf("===============================================\n");
+//     ptr = ptr->next;
+//     i++;
+// }

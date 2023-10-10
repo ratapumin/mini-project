@@ -33,7 +33,10 @@ void EditService(int isEditService, customers customarData)
     ServiceList *servicelist = NULL, *head = NULL, *current = NULL, *ptr = NULL;
 
     system("cls");
-    printf("You: f:%s l:%s id:%s\n", customerData.fname, customerData.lname, customerData.id_card);
+    printf("You: f:%s l:%s id:%s\n",
+           customerData.fname,
+           customerData.lname,
+           customerData.id_card);
     FILE *editservicefile;
     editservicefile = fopen("./CSV/service.csv", "r");
     if (!editservicefile)
@@ -96,7 +99,7 @@ void EditService(int isEditService, customers customarData)
 
         if (servicedata == NULL)
         {
-            perror("can not service!");
+            perror("can not service!\n");
             exit(1);
         }
 

@@ -39,6 +39,7 @@ customers customerData;
 
 void service(int isService, customers *current);
 void EditService(int isEditService, customers customerData);
+void delectService(int isdeleteService, customers customerData);
 
 char *getTel(int pass_len)
 {
@@ -91,8 +92,10 @@ void customerMenu(int isCustomerLoggedIn)
     // int save_day, save_month, save_year;
     int isService = 0;
     int isEditService = 0;
+    int isdeleteService = 0;
 
-    customers *cust = NULL, *current = NULL;
+    customers *cust = NULL,
+              *current = NULL;
 
     while (1)
     {
@@ -115,7 +118,7 @@ void customerMenu(int isCustomerLoggedIn)
             printf("id_card: %s \n", customerData.id_card);
             printf("1: Booking service\n");
             printf("2: Edit service\n");
-            printf("3: View reservation list\n");
+            printf("3: Delete service\n");
             printf("4: Logout\n");
             printf("Select the logout item: ");
             scanf("%d", &logout);
@@ -138,6 +141,12 @@ void customerMenu(int isCustomerLoggedIn)
                 }
             }
             break;
+            case 3:
+            {
+                delectService(isdeleteService, customerData);
+            }
+            break;
+
             case 4:
 
             {

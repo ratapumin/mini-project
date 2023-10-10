@@ -4,6 +4,7 @@
 #include "customer.c"
 #include "service.c"
 #include "editService.c"
+#include "deleteService.c"
 
 void customerMenu(int isCustomerLoggedIn);
 

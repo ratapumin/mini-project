@@ -25,16 +25,18 @@ void delectService(int isdeleteService, customers customerData)
 
     int found = 0;
     int i = 0;
-
+    int case_delete;
+    char ch = 'y';
     DeleteData *deletedata = NULL;
-    DeleteList *deletelist = NULL, *head = NULL, *current = NULL, *ptr = NULL;
+    DeleteList *deletelist = NULL, *head = NULL, *current = NULL, *ptr = NULL, *prev = NULL;
 
     printf("You: f:%s l:%s id:%s\n",
            customerData.fname,
            customerData.lname,
            customerData.id_card);
-    printf("IN VOID DELETE\n");
-
+    printf("===============================================\n");
+    printf("                DELETE BOOKING                 \n");
+    printf("===============================================\n");
     FILE *deleteservicefile;
     deleteservicefile = fopen("./CSV/service.csv", "r");
     if (!deleteservicefile)
@@ -135,13 +137,118 @@ void delectService(int isdeleteService, customers customerData)
             }
             printf("\n");
         }
-        // else
-        // {
-        //     printf("No booking information\n");
-        //     printf("===============================\n");
-        //     break;
-        // }
+        else
+        {
+            printf("No booking information\n");
+            printf("===============================\n");
+            break;
+        }
     }
     fclose(deleteservicefile);
+    printf("EIEI\n");
+
+    if (found)
+    {
+        printf("Enter The booking number you want to edit: ");
+        scanf("%d", &case_delete);
+        if (case_delete < 1 || case_delete > i)
+        {
+            printf("Invalid booking number. Please enter a valid number.\n");
+        }
+        else
+        {
+            while (ch != 'n')
+            {
+                int current_booking = 0;
+                ptr = head;
+                prev = NULL;
+
+                while (ptr != NULL)
+                {
+                    if (strcmp(customerData.id_card, ptr->data.id_card) == 0 &&
+                        strcmp(customerData.username, ptr->data.username) == 0)
+                    {
+                        current_booking++;
+
+                        if (current_booking == case_delete)
+                        {
+                            system("cls");
+                            printf("===============================================\n");
+                            printf("BOOKING = %d\n", case_delete);
+                            printf("===============================================\n");
+                            printf("ID Card: %s\n", ptr->data.id_card);
+                            printf("Username: %s\n", ptr->data.username);
+                            printf("Day/Month/Year: %d/%d/%d\n",
+                                   ptr->data.day, ptr->data.month, ptr->data.year);
+                            printf("Timer Service: %.2f\n", ptr->data.time);
+                            printf("===============================================\n");
+                            printf("Do you want to delete this booking?(Y/N): ");
+                            scanf(" %c", &ch);
+                            getchar();
+
+                            if (ch == 'y')
+                            {
+                                if (prev == NULL)
+                                {
+                                    head = ptr->next;
+                                }
+                                else
+                                {
+                                    prev->next = ptr->next;
+                                }
+                                free(ptr);
+                                printf("\nDelete in Booking successful!!\n");
+                                customerMenu(1);
+                            }
+                            break;
+                        }
+                    }
+                    prev = ptr;
+                    ptr = ptr->next;
+                }
+                customerMenu(1);
+            }
+        }
+    }
 
 } // end
+
+// system("cls");
+// printf("===============================================\n");
+// printf("BOOKING = %d\n", case_delete);
+// printf("===============================================\n");
+// printf("ID Card: %s\n", ptr->data.id_card);
+// printf("Username: %s\n", ptr->data.username);
+// printf("Day/Month/Year: %d/%d/%d\n",
+//        ptr->data.day, ptr->data.month, ptr->data.year);
+// printf("Timer Service: %.2f\n", ptr->data.time);
+// printf("===============================================\n");
+
+// printf("===============================================\n");
+// printf("BOOKING = %d\n", case_delete);
+// printf("===============================================\n");
+// printf("ID Card: %s\n", ptr->data.id_card);
+// printf("Username: %s\n", ptr->data.username);
+// printf("Day/Month/Year: %d/%d/%d\n",
+//        ptr->data.day, ptr->data.month, ptr->data.year);
+// printf("Timer Service: %.2f\n", ptr->data.time);
+// printf("===============================================\n");
+
+// if (current_booking != case_delete)
+// {
+//     printf("Invalid booking number. Please enter a valid number.\n");
+// }
+
+// printf("Remaining Data in the Node:\n");
+// ptr = head;
+// while (ptr != NULL)
+// {
+//     printf("===============================================\n");
+//     printf("ID Card: %s\n", ptr->data.id_card);
+//     printf("Username: %s\n", ptr->data.username);
+//     printf("Day/Month/Year: %d/%d/%d\n",
+//            ptr->data.day, ptr->data.month, ptr->data.year);
+//     printf("Timer Service: %.2f\n", ptr->data.time);
+//     printf("===============================================\n");
+//     ptr = ptr->next;
+// }

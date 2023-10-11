@@ -163,6 +163,7 @@ void EditService(int isEditService, customers customarData)
 
             while (ptr != NULL)
             {
+
                 if (strcmp(customerData.id_card, ptr->data.id_card) == 0 &&
                     strcmp(customerData.username, ptr->data.username) == 0)
                     current_booking++;

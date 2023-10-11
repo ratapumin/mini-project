@@ -145,9 +145,7 @@ void delectService(int isdeleteService, customers customerData)
         }
     }
     fclose(deleteservicefile);
-    printf("EIEI\n");
 
-    // ...
     if (found)
     {
         printf("Enter The booking number you want to delete: ");
@@ -155,6 +153,7 @@ void delectService(int isdeleteService, customers customerData)
         if (case_delete < 1 || case_delete > i)
         {
             printf("Invalid booking number. Please enter a valid number.\n");
+            customerMenu(1);
         }
         else
         {

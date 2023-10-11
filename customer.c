@@ -149,17 +149,15 @@ void customerMenu(int isCustomerLoggedIn)
 
             case 4:
 
-            {
                 if (isCustomerLoggedIn)
                 {
-                    isCustomerLoggedIn = 0;
                     free(current);
                     current = NULL;
+                    isCustomerLoggedIn = 0;
                     printf("Logout Successfully!\n");
                     return;
                 }
-            }
-            break;
+                break;
             default:
                 break;
             }
@@ -389,12 +387,12 @@ void customerMenu(int isCustomerLoggedIn)
         }
         break;
         case 4:
-            return; // Return to the caller (main menu)
+            return;
         default:
             printf("Invalid choice. Please try again.\n");
             if (login == 4)
             {
-                break;
+                return;
             }
             break;
         } // close switch case login

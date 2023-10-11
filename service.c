@@ -780,7 +780,17 @@ void service(int isService, customers *current)
         }
         break;
         case 5:
+            // printf("===============================\n");
+            // printf("fname: %s lname: %s\n", customerData.fname, customerData.lname);
+            // printf("id_card: %s \n", customerData.id_card);
+            // printf("1: Booking service\n");
+            // printf("2: Edit service\n");
+            // printf("3: Delete service\n");
+            // printf("4: Logout\n");
+            // printf("Select the logout item: ");
+            // return;
             customerMenu(1);
+            return;
         default:
         {
             printf("Invalid choice. Please try again.\n");

@@ -147,9 +147,10 @@ void delectService(int isdeleteService, customers customerData)
     fclose(deleteservicefile);
     printf("EIEI\n");
 
+    // ...
     if (found)
     {
-        printf("Enter The booking number you want to edit: ");
+        printf("Enter The booking number you want to delete: ");
         scanf("%d", &case_delete);
         if (case_delete < 1 || case_delete > i)
         {
@@ -197,16 +198,51 @@ void delectService(int isdeleteService, customers customerData)
                                     prev->next = ptr->next;
                                 }
                                 free(ptr);
-                                printf("\nDelete in Booking successful!!\n");
-                                customerMenu(1);
                             }
-                            break;
+
+                            printf("\nUpdated Booking List:\n");
+                            ptr = head;
+                            i = 0;
+                            while (ptr != NULL)
+                            {
+                                printf("===============================================\n");
+                                printf("BOOKING = %d\n", i);
+                                printf("===============================================\n");
+                                printf("ID Card: %s\n", ptr->data.id_card);
+                                printf("Username: %s\n", ptr->data.username);
+                                printf("Day/Month/Year: %d/%d/%d\n", ptr->data.day, ptr->data.month, ptr->data.year);
+                                printf("Timer Service: %.2f\n", ptr->data.time);
+                                printf("===============================================\n");
+                                ptr = ptr->next;
+                                i++;
+                            }
+
+                            // Save the updated data into the CSV file
+                            FILE *deleteservicefile;
+                            deleteservicefile = fopen("./CSV/service.csv", "w");
+                            if (!deleteservicefile)
+                            {
+                                perror("Error opening file");
+                                exit(1);
+                            }
+
+                            DeleteList *current = head;
+                            while (current != NULL)
+                            {
+                                fprintf(deleteservicefile, "%s,%s,%d,%d,%d,%.2f\n", current->data.id_card, current->data.username,
+                                        current->data.day, current->data.month, current->data.year, current->data.time);
+                                current = current->next;
+                            }
+
+                            fclose(deleteservicefile);
+
+                            printf("\nDelete in Booking successful!!\n");
+                            customerMenu(1);
                         }
                     }
                     prev = ptr;
                     ptr = ptr->next;
                 }
-                customerMenu(1);
             }
         }
     }

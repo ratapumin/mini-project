@@ -4,121 +4,180 @@
 
 void employeeMenu(int isEmployeeMenu)
 {
-    int case_emp;
+    int login, logout;
     char username[20];
     char password[20];
+    int found = 0;
+    int i = 0;
+    char *save_username, *save_password, *save_role, *save_fname, *save_lname, *save_id_card, *save_pnumber, *save_address;
+    int save_day, save_month, save_year, save_age, save_time;
 
     while (1)
     {
-        printf("===============================\n");
-        printf("Menu For Customer\n");
-        printf("1: Login\n");
-        printf("2: Return to Main Menu\n");
-        printf("Select the desired item: ");
-        scanf("%d", &case_emp);
-        printf("===============================\n");
-
-        switch (case_emp)
+        if (!(isEmployeeMenu))
         {
-        case 1:
-        {
-            printf("Username: ");
-            scanf("")
-            printf("Password: ");
-            break;
-        }
-        break;
-        case 2:
-            printf("Menu For employees\n");
-            printf("1: Dental appointment queue list\n");
-            printf("2: Book a dental appointment\n");
+            printf("===============================\n");
+            printf("        Menu For Customer      \n");
+            printf("===============================\n");
+            printf("1: Login\n");
+            printf("2: Return to Main Menu\n");
             printf("Select the desired item: ");
-            scanf("%d", &case_emp);
-            switch (case_emp)
+        }
+        else
+        {
+            printf("===============================\n");
+            printf("Role: %s\n", save_role);
+            printf("===============================\n");
+            printf("1: View reservation list\n");
+            printf("2: Edit service\n");
+            printf("3: Delete service\n");
+            printf("4: Logout\n");
+            printf("Select the logout item: ");
+            scanf("%d", &logout);
+
+            switch (logout)
             {
             case 1:
             {
-
-                FILE *empfile;
-                char *name;
-                empfile = fopen("./CSV/employee", "w");
-
-                if (!empfile)
+                printf("===============================\n");
+                printf("Role: %s\n", save_role);
+                printf("===============================\n");
+                FILE *editservicefile;
+                editservicefile = fopen("./CSV/service.csv", "r");
+                if (!editservicefile)
                 {
                     perror("Error opening file");
                     exit(1);
                 }
-                else
+                char line[1024];
+                int row = 0;
+                int column = 0;
+                while (fgets(line, sizeof(line), editservicefile))
                 {
-                    char emp_file[1024];
-                    int row = 0;
-                    int column = 0;
-                    while (fgets(emp_file, 1024, empfile))
+                    if (row == 0)
                     {
-                        column = 0;
+                        strtok(line, ",");
                         row++;
-
-                        if (row == 1)
-                            continue;
-                        char *value = strtok(emp_file, ",");
-                        while (value)
-                        {
-                            if (column == 0)
-                            {
-                                printf("username: ");
-                            }
-                            if (column == 1)
-                            {
-                                printf("\tpassword: ");
-                            }
-                            if (column == 2)
-                            {
-                                printf("\tfname: ");
-                            }
-                            if (column == 3)
-                            {
-                                printf("\tlname: ");
-                            }
-                            if (column == 4)
-                            {
-                                printf("\tdate: ");
-                            }
-                            if (column == 5)
-                            {
-                                printf("\tage: ");
-                            }
-                            if (column == 6)
-                            {
-                                printf("\tid_card: ");
-                            }
-                            if (column == 7)
-                            {
-                                printf("\tpnumber: ");
-                            }
-                            if (column == 8)
-                            {
-                                printf("\taddress: ");
-                            }
-                            printf("%s ", value);
-                            value = strtok(NULL, ",");
-                            column++;
-                        }
-                        printf("\n");
+                        continue;
                     }
+                    char *token = strtok(line, ",");
+                    char *save_id_card, *save_username;
+                    int save_day, save_month, save_year;
+                    float save_time;
+
+                    if (token != NULL)
+                    {
+                        save_id_card = strdup(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_username = strdup(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_day = atoi(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_month = atoi(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_year = atoi(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_time = atoi(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (save_id_card != NULL)
+                    {
+
+                        printf("===============================================\n");
+                        printf("BOOKING = %d\n", i + 1);
+                        printf("===============================================\n");
+                        printf("ID Card: %s\n", save_id_card);
+                        printf("Username: %s\n", save_username);
+                        printf("Day/Month/Year: %d/%d/%d\n",
+                               save_day, save_month, save_year);
+                        printf("Timer Service: %.2f\n", save_time);
+                        printf("===============================================\n");
+                    }
+                    i++;
+
+                }
+                int re;
+                printf("1: Return to EmployeeMenu\n");
+                printf("Select the desired item: ");
+                scanf("%d",&re);
+                if(re==1)
+                {
+                    employeeMenu(1);
                 }
             }
-            break;
-            case 2:
                 break;
             default:
                 break;
             }
-            break;
-        case 3:
-            printf("Exit\n");
-            exit(0);
+        }
+        scanf("%d", &login);
+        switch (login)
+        {
+        case 1:
+        {
+            if (!(isEmployeeMenu))
+            {
+                char username[20], password[20];
+                printf("Username: ");
+                scanf("%s", username);
+                printf("Password: ");
+                scanf("%s", password);
+                FILE *empfile;
+                empfile = fopen("./CSV/emplyee.csv", "r");
+                if (!empfile)
+                {
+                    perror("Can not opening customer.csv!");
+                    exit(1);
+                }
+                int found = 0;
+                char line[1024];
+                while (fgets(line, sizeof(line), empfile))
+                {
+                    char *token = strtok(line, ",");
+                    if (token != NULL)
+                    {
+                        save_username = strdup(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_password = strdup(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_role = strdup(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (strcmp(username, save_username) == 0 &&
+                        strcmp(password, save_password) == 0)
+                    {
+                        found = 1;
+                        isEmployeeMenu = 1;
+                        printf("login success\n");
+                    }
+                }
+            }
+        }
+
+        break;
         default:
             break;
         }
     }
-}
+} // end

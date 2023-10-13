@@ -19,22 +19,6 @@ typedef struct customer
 
 } customers;
 
-typedef struct User
-{
-    char username[20];
-    char password[20];
-    char fname[50];
-    char lname[50];
-    int day;
-    int month;
-    int year;
-    int age;
-    char id_card[14];
-    char pnumber[11];
-    char address[100];
-
-} User;
-
 customers customerData;
 
 void service(int isService, customers *current);
@@ -120,7 +104,7 @@ void customerMenu(int isCustomerLoggedIn)
             printf("2: Edit service\n");
             printf("3: Delete service\n");
             printf("4: Logout\n");
-            printf("Select the logout item: ");
+            printf("Select the desired item: ");
             scanf("%d", &logout);
             switch (logout)
             {
@@ -151,11 +135,11 @@ void customerMenu(int isCustomerLoggedIn)
 
                 if (isCustomerLoggedIn)
                 {
-                    free(current);
                     current = NULL;
+                    free(current);
                     isCustomerLoggedIn = 0;
                     printf("Logout Successfully!\n");
-                    return;
+                    return free(current);
                 }
                 break;
             default:

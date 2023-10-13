@@ -44,6 +44,7 @@ void service(int isService, customers *current)
             printf("2: 10.30\n");
             printf("3: 11.00\n");
             printf("4: 11.30\n");
+            printf("Lunch break !!\n");
             printf("5: 13.00\n");
             printf("6: 13.30\n");
             printf("7: 14.00\n");

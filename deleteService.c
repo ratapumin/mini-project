@@ -34,9 +34,7 @@ void delectService(int isdeleteService, customers customerData)
            customerData.fname,
            customerData.lname,
            customerData.id_card);
-    printf("===============================================\n");
-    printf("                DELETE BOOKING                 \n");
-    printf("===============================================\n");
+
     FILE *deleteservicefile;
     deleteservicefile = fopen("./CSV/service.csv", "r");
     if (!deleteservicefile)
@@ -123,6 +121,8 @@ void delectService(int isdeleteService, customers customerData)
                 strcmp(customerData.username, deletelist->data.username) == 0)
             {
                 found = 1;
+                printf("===============================================\n");
+                printf("                DELETE BOOKING                 \n");
                 printf("===============================================\n");
                 printf("BOOKING = %d\n", i + 1);
                 printf("===============================================\n");

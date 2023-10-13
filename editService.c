@@ -149,6 +149,7 @@ void EditService(int isEditService, customers customarData)
 
     if (found)
     {
+
         printf("Enter The booking number you want to edit: ");
         scanf("%d", &case_edit);
 
@@ -158,6 +159,7 @@ void EditService(int isEditService, customers customarData)
         }
         else
         {
+            int inputError = 0;
             int current_booking = 0;
             ptr = head;
 
@@ -188,27 +190,36 @@ void EditService(int isEditService, customers customarData)
                     printf("Username: %s\n", ptr->data.username);
                     printf("Date, month, year that you want to change\n");
                     printf("Day: ");
-                    printf("Day: ");
                     if (scanf("%d", &day) == 1)
                     {
                         if (day < 1 || day > 31)
                         {
                             printf("Please enter a day between 1 and 31.\n");
-                            continue; // Allow the user to enter the day again.
+                            inputError = 1;
+                            continue;
                         }
                     }
-                    // else
-                    // {
-                    //     printf("Invalid input for the day. Please enter a numeric value.\n");
-                    //     int c;
-                    //     while ((c = getchar()) != '\n' && c != EOF)
-                    //         ; // Consume any remaining characters in the input buffer.
-                    // }
+                    else
+                    {
+                        printf("Invalid input for the day. Please enter a numeric value.\n");
+                        inputError = 2;
+                        int c;
+                        while ((c = getchar()) != '\n' && c != EOF)
+                            ;
+                        continue;
+                    }
 
                     printf("Month: ");
-                    scanf("%d", &month);
+                    if (scanf("%d", &month) == 1)
+                        ;
+                    {
+                        if (month < 1 || month > 12)
+                        {
+                            printf("Please enter a month between 1 and 12.\n");
+                            continue;
+                        }
+                    }
                     printf("Year: 2566\n");
-
                     printf("Time to change\n");
                     printf("Open 10.00 - 19.00\n");
                     printf("time: ");
@@ -217,31 +228,32 @@ void EditService(int isEditService, customers customarData)
                     ptr->data.month = month;
                     ptr->data.year = 2566;
                     ptr->data.time = add_time;
-
                     break;
                 }
                 ptr = ptr->next;
             }
-            FILE *editservicefile;
-            editservicefile = fopen("./CSV/service.csv", "w");
-            if (!editservicefile)
+            if (found & inputError == 0)
             {
-                perror("Error opening file");
-                exit(1);
+                FILE *editservicefile;
+                editservicefile = fopen("./CSV/service.csv", "w");
+                if (!editservicefile)
+                {
+                    perror("Error opening file");
+                    exit(1);
+                }
+                ServiceList *current = head;
+                while (current != NULL)
+                {
+                    fprintf(editservicefile, "%s,%s,%d,%d,%d,%.2f\n", current->data.id_card, current->data.username,
+                            current->data.day, current->data.month, current->data.year, current->data.time);
+                    current = current->next;
+                }
+
+                fclose(editservicefile);
+
+                printf("Booking updated successfully!\n");
+                customerMenu(1);
             }
-
-            ServiceList *current = head;
-            while (current != NULL)
-            {
-                fprintf(editservicefile, "%s,%s,%d,%d,%d,%.2f\n", current->data.id_card, current->data.username,
-                        current->data.day, current->data.month, current->data.year, current->data.time);
-                current = current->next;
-            }
-
-            fclose(editservicefile);
-
-            printf("Booking updated successfully!\n");
-            customerMenu(1);
         }
     }
 

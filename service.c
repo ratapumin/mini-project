@@ -38,7 +38,7 @@ void service(int isService, customers *current)
                 scanf("%d", &day);
                 printf("Mounth: ");
                 scanf("%d", &month);
-                
+
                 printf("Year: 2566\n");
                 // scanf("%d", &year);
                 printf("Plase Choose the desired time\n");
@@ -784,8 +784,9 @@ void service(int isService, customers *current)
             }
             break;
             case 5:
-                customerMenu(1);
-                return;
+                // customerMenu(1);
+                // return;
+                continue;
 
             default:
                 printf("Invalid choice. Please try again.\n");

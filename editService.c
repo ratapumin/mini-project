@@ -202,7 +202,7 @@ void EditService(int isEditService, customers customarData)
                     else
                     {
                         printf("Invalid input for the day. Please enter a numeric value.\n");
-                        inputError = 2;
+                        inputError = 1;
                         int c;
                         while ((c = getchar()) != '\n' && c != EOF)
                             ;
@@ -211,19 +211,34 @@ void EditService(int isEditService, customers customarData)
 
                     printf("Month: ");
                     if (scanf("%d", &month) == 1)
-                        ;
                     {
                         if (month < 1 || month > 12)
                         {
                             printf("Please enter a month between 1 and 12.\n");
+                            inputError = 1;
                             continue;
                         }
+                    }
+                    else
+                    {
+                        printf("Invalid input for the day. Please enter a numeric value.\n");
+                        inputError = 1;
+                        int c;
+                        while ((c = getchar()) != '\n' && c != EOF)
+                            ;
+                        continue;
+                    }
+                    if (month == 2 && day > 28)
+                    {
+                        printf("Please Enter again!! February has 28 days.\n");
+                        inputError = 1;
+                        continue;
                     }
                     printf("Year: 2566\n");
                     printf("Time to change\n");
                     printf("Open 10.00 - 19.00\n");
                     printf("time: ");
-                    scanf("%f", &add_time);
+      
                     ptr->data.day = day;
                     ptr->data.month = month;
                     ptr->data.year = 2566;
@@ -232,7 +247,7 @@ void EditService(int isEditService, customers customarData)
                 }
                 ptr = ptr->next;
             }
-            if (found & inputError == 0)
+            if (found && inputError == 0)
             {
                 FILE *editservicefile;
                 editservicefile = fopen("./CSV/service.csv", "w");

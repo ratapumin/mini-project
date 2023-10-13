@@ -784,9 +784,8 @@ void service(int isService, customers *current)
             }
             break;
             case 5:
-                // customerMenu(1);
-                // return;
-                continue;
+                customerMenu(1);
+                return;
 
             default:
                 printf("Invalid choice. Please try again.\n");

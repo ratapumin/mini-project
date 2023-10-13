@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "customer.c"
 #include "service.c"
 #include "editService.c"
@@ -25,40 +26,30 @@ int main()
         printf("2: Employee\n");
         printf("3: Exit\n");
         printf("Select the desired item: ");
-
-        if (fgets(input, sizeof(input), stdin) != NULL)
+        if (scanf("%d", &choice) == 1)
         {
-            if (sscanf(input, "%d", &choice) == 1)
+            switch (choice)
             {
-
-                int c;
-                while ((c = getchar()) != '\n' && c != EOF)
-                    ;
-
-                switch (choice)
-                {
-                case 1:
-                    customerMenu(isCustomerLoggedIn);
-                    break;
-                case 2:
-                    employeeMenu(isEmployeeMenu);
-                    break;
-                case 3:
-                    printf("Exit\n");
-                    exit(0);
-                default:
-                    printf("Invalid choice. Please try again.\n");
-                }
-            }
-            else
-            {
-                printf("Invalid choice. Please enter a numeric choice.\n");
+            case 1:
+                customerMenu(isCustomerLoggedIn);
+                break;
+            case 2:
+                employeeMenu(isEmployeeMenu);
+                break;
+            case 3:
+                printf("Exit\n");
+                exit(0);
+            default:
+                printf("Invalid choice. Please try again.\n");
             }
         }
         else
         {
-            printf("Error reading input.\n");
-            exit(1);
+            printf("Invalid choice. Please enter a numeric choice.\n");
+            // Consume any remaining characters in the input buffer
+            int c;
+            while ((c = getchar()) != '\n' && c != EOF)
+                ;
         }
     }
 }

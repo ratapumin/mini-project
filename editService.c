@@ -188,11 +188,26 @@ void EditService(int isEditService, customers customarData)
                     printf("Username: %s\n", ptr->data.username);
                     printf("Date, month, year that you want to change\n");
                     printf("Day: ");
-                    scanf("%d", &day);
+                    printf("Day: ");
+                    if (scanf("%d", &day) == 1)
+                    {
+                        if (day < 1 || day > 31)
+                        {
+                            printf("Please enter a day between 1 and 31.\n");
+                            continue; // Allow the user to enter the day again.
+                        }
+                    }
+                    // else
+                    // {
+                    //     printf("Invalid input for the day. Please enter a numeric value.\n");
+                    //     int c;
+                    //     while ((c = getchar()) != '\n' && c != EOF)
+                    //         ; // Consume any remaining characters in the input buffer.
+                    // }
+
                     printf("Month: ");
                     scanf("%d", &month);
-                    printf("Year: ");
-                    scanf("%d", &year);
+                    printf("Year: 2566\n");
 
                     printf("Time to change\n");
                     printf("Open 10.00 - 19.00\n");
@@ -200,7 +215,7 @@ void EditService(int isEditService, customers customarData)
                     scanf("%f", &add_time);
                     ptr->data.day = day;
                     ptr->data.month = month;
-                    ptr->data.year = year;
+                    ptr->data.year = 2566;
                     ptr->data.time = add_time;
 
                     break;
@@ -231,40 +246,3 @@ void EditService(int isEditService, customers customarData)
     }
 
 } // end
-
-// i = 0;
-
-// printf("head\n");
-// while (head != NULL)
-// {
-
-//     printf("===============================================\n");
-//     printf("BOOKING = %d\n", i);
-//     printf("===============================================\n");
-//     printf("ID Card: %s\n", head->data.id_card);
-//     printf("Username: %s\n", head->data.username);
-//     printf("Day/Month/Year: %d/%d/%d\n",
-//            head->data.day, head->data.month, head->data.year);
-//     printf("Timer Service: %.2f\n", head->data.time);
-//     printf("===============================================\n");
-//     head = head->next;
-//     i++;
-// }
-
-// i = 1;
-// ptr = head;
-// while (ptr != NULL)
-// {
-
-//     printf("===============================================\n");
-//     printf("BOOKING = %d\n", i);
-//     printf("===============================================\n");
-//     printf("ID Card: %s\n", ptr->data.id_card);
-//     printf("Username: %s\n", ptr->data.username);
-//     printf("Day/Month/Year: %d/%d/%d\n",
-//            ptr->data.day, ptr->data.month, ptr->data.year);
-//     printf("Timer Service: %.2f\n", ptr->data.time);
-//     printf("===============================================\n");
-//     ptr = ptr->next;
-//     i++;
-// }

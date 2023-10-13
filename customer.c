@@ -93,6 +93,332 @@ void customerMenu(int isCustomerLoggedIn)
             printf("3: Forget Password\n");
             printf("4: Return to Main Menu\n");
             printf("Select the desired item: ");
+            if (scanf("%d", &login) == 1)
+            {
+                switch (login)
+                {
+                case 1:
+                {
+                    if (!(isCustomerLoggedIn))
+                    {
+                        char username[20], password[20];
+                        printf("Username: ");
+                        scanf("%s", username);
+                        printf("Password: ");
+                        scanf("%s", password);
+
+                        FILE *cusfile;
+                        cusfile = fopen("./CSV/customer.csv", "r");
+                        if (!cusfile)
+                        {
+                            perror("Can not opening customer.csv!");
+                            exit(1);
+                        }
+                        int found = 0;
+                        char line[1024];
+                        while (fgets(line, sizeof(line), cusfile))
+                        {
+
+                            char *token = strtok(line, ",");
+                            char *save_username, *save_password, *save_fname, *save_lname, *save_id_card, *save_pnumber, *save_address;
+                            int save_day, save_month, save_year, save_age;
+                            if (token != NULL)
+                            {
+                                save_username = strdup(token);
+                                token = strtok(NULL, ",");
+                            }
+                            if (token != NULL)
+                            {
+                                save_password = strdup(token);
+                                token = strtok(NULL, ",");
+                            }
+                            if (token != NULL)
+                            {
+                                save_fname = strdup(token);
+                                token = strtok(NULL, ",");
+                            }
+                            if (token != NULL)
+                            {
+                                save_lname = strdup(token);
+                                token = strtok(NULL, ",");
+                            }
+                            if (token != NULL)
+                            {
+                                save_day = atoi(token);
+                                token = strtok(NULL, ",");
+                            }
+                            if (token != NULL)
+                            {
+                                save_month = atoi(token);
+                                token = strtok(NULL, ",");
+                            }
+                            if (token != NULL)
+                            {
+                                save_year = atoi(token);
+                                token = strtok(NULL, ",");
+                            }
+                            if (token != NULL)
+                            {
+                                save_age = atoi(token);
+                                token = strtok(NULL, ",");
+                            }
+                            if (token != NULL)
+                            {
+                                save_id_card = strdup(token);
+                                token = strtok(NULL, ",");
+                            }
+                            if (token != NULL)
+                            {
+                                save_pnumber = strdup(token);
+                                token = strtok(NULL, ",");
+                            }
+                            if (token != NULL)
+                            {
+                                save_address = strdup(token);
+                                // token = strtok(NULL, ",");
+                            }
+
+                            if (strcmp(username, save_username) == 0 &&
+                                strcmp(password, save_password) == 0)
+                            {
+                                found = 1;
+                                isCustomerLoggedIn = 1;
+                                // system("cls");
+
+                                current = (customers *)malloc(sizeof(customers));
+                                if (current == NULL)
+                                {
+                                    perror("current == NULL");
+                                    exit(1);
+                                }
+                                strcpy(current->username, save_username);
+                                strcpy(current->password, save_password);
+                                strcpy(current->fname, save_fname);
+                                strcpy(current->lname, save_lname);
+                                current->day = save_day;
+                                current->month = save_month;
+                                current->year = save_year;
+                                current->age = save_age;
+                                strcpy(current->id_card, save_id_card);
+                                strcpy(current->pnumber, save_pnumber);
+                                strcpy(current->address, save_address);
+
+                                /* --------------------------------------------------- */
+
+                                strcpy(customerData.username, current->username);
+                                strcpy(customerData.password, current->password);
+                                strcpy(customerData.fname, current->fname);
+                                strcpy(customerData.lname, current->lname);
+                                customerData.day = save_day;
+                                customerData.month = save_month;
+                                customerData.year = save_year;
+                                customerData.age = save_age;
+
+                                strcpy(customerData.id_card, current->id_card);
+                                strcpy(customerData.pnumber, current->pnumber);
+                                strcpy(customerData.address, current->address);
+
+                                // system("cls");
+                                printf("===============================\n");
+                                printf("Login Successfully!\n");
+                                printf("user: %s password: %s \n", customerData.username, customerData.password);
+                                printf("fname: %s lname: %s\n", customerData.fname, customerData.lname);
+                                printf("day: %d month: %d year: %d age: %d\n", customerData.day, customerData.month, customerData.year, customerData.age);
+                                printf("id_card: %s pnumber:(+66) %s\n", customerData.id_card, customerData.pnumber);
+                                printf("address: %s\n", customerData.address);
+                                break;
+                            }
+                        }
+                        fclose(cusfile);
+                        if (!found)
+                        {
+                            printf("Login failed. Wrong username or password.\n");
+                        }
+                    }
+                    else
+                    {
+                        printf("You are logged in.\n");
+                    }
+                }
+                break;
+                case 2:
+                {
+                    {
+                        // add customer
+
+                        printf("Register\n");
+                        cust = (customers *)malloc(sizeof(customers));
+                        if (cust == NULL)
+                        {
+                            perror("cust == NULL");
+                            exit(1);
+                        }
+                        printf("Username: ");
+                        scanf("%s", cust->username);
+                        printf("Password: ");
+                        scanf("%s", cust->password);
+                        printf("First Name: ");
+                        scanf("%s", cust->fname);
+                        printf("Last Name: ");
+                        scanf("%s", cust->lname);
+                        printf("Date of birth (dd/mm/yyyy)\n");
+                        printf("Day(01/mm/yyyy): ");
+                        scanf("%d", &cust->day);
+                        printf("Month(dd/01/yyyy): ");
+                        scanf("%d", &cust->month);
+                        printf("Year(dd/mm/2543): ");
+                        scanf("%d", &cust->year);
+                        printf("Age: ");
+                        scanf("%d", &cust->age);
+                        while (getchar() != '\n')
+                            ;
+                        printf("Id Card: ");
+                        strcpy(cust->id_card, getTel(13));
+                        printf("Phone Number: ");
+                        strcpy(cust->pnumber, getTel(10));
+                        printf("Address: ");
+                        fgets(cust->address, sizeof(cust->address), stdin);
+
+                        cust->address[strcspn(cust->address, "\n")] = '\0';
+
+                        FILE *cusfile;
+                        cusfile = fopen("./CSV/customer.csv", "r");
+
+                        if (!cusfile)
+                        {
+                            perror("Error opening file");
+                            exit(1); // Exit the program if the file couldn't be opened
+                        }
+
+                        // fgets(input, maxSize, stdin);
+                        int found = 0;
+                        char line[1024];
+                        while (fgets(line, sizeof(line), cusfile))
+                        {
+
+                            char *token = strtok(line, ",");
+                            char *save_username, *save_password, *save_fname, *save_lname, *save_id_card, *save_pnumber, *save_address;
+                            int save_day, save_month, save_year, save_age;
+                            if (token != NULL)
+                            {
+                                save_username = strdup(token);
+                                token = strtok(NULL, ",");
+                            }
+                            if (token != NULL)
+                            {
+                                save_password = strdup(token);
+                                token = strtok(NULL, ",");
+                            }
+                            if (token != NULL)
+                            {
+                                save_fname = strdup(token);
+                                token = strtok(NULL, ",");
+                            }
+                            if (token != NULL)
+                            {
+                                save_lname = strdup(token);
+                                token = strtok(NULL, ",");
+                            }
+                            if (token != NULL)
+                            {
+                                save_day = atoi(token);
+                                token = strtok(NULL, ",");
+                            }
+                            if (token != NULL)
+                            {
+                                save_month = atoi(token);
+                                token = strtok(NULL, ",");
+                            }
+                            if (token != NULL)
+                            {
+                                save_year = atoi(token);
+                                token = strtok(NULL, ",");
+                            }
+                            if (token != NULL)
+                            {
+                                save_age = atoi(token);
+                                token = strtok(NULL, ",");
+                            }
+                            if (token != NULL)
+                            {
+                                save_id_card = strdup(token);
+                                token = strtok(NULL, ",");
+                            }
+                            if (token != NULL)
+                            {
+                                save_pnumber = strdup(token);
+                                token = strtok(NULL, ",");
+                            }
+                            if (token != NULL)
+                            {
+                                save_address = strdup(token);
+                                // token = strtok(NULL, ",");
+                            }
+                            if (strcmp(cust->username, save_username) == 0)
+
+                            {
+                                found = 1;
+                                printf("has username\n");
+                            }
+                            if (strcmp(cust->id_card, save_id_card) == 0)
+                            {
+                                found = 1;
+                                printf("has id_card\n");
+                                break;
+                            }
+                        }
+                        fclose(cusfile);
+
+                        // savefile
+                        if (!found)
+                        {
+                            cusfile = fopen("./CSV/customer.csv", "a");
+                            if (!cusfile)
+                            {
+                                perror("Can not opening customer.csv!");
+                                exit(1);
+                            }
+                            fprintf(cusfile, "%s,%s,%s,%s,%d,%d,%d,%d,%s,%s,%s\n",
+                                    cust->username,
+                                    cust->password,
+                                    cust->fname,
+                                    cust->lname,
+                                    cust->day,
+                                    cust->month,
+                                    cust->year,
+                                    cust->age,
+                                    cust->id_card,
+                                    cust->pnumber,
+                                    cust->address);
+                            printf("Register Successfully\n");
+
+                            fclose(cusfile);
+                            free(cust);
+                            break;
+                        }
+                    }
+                }
+                break;
+                case 3:
+                {
+                    printf("forget password\n");
+                }
+                break;
+                case 4:
+                    return;
+                default:
+                    printf("Invalid choice. Please try again.\n");
+                    break;
+                }
+            }
+            else
+            {
+                printf("Invalid choice. Please enter a numeric choice.\n");
+                // Consume any remaining characters in the input buffer
+                int c;
+                while ((c = getchar()) != '\n' && c != EOF)
+                    ;
+            } // close switch case login
         }
         else
         {
@@ -105,366 +431,57 @@ void customerMenu(int isCustomerLoggedIn)
             printf("3: Delete service\n");
             printf("4: Logout\n");
             printf("Select the desired item: ");
-            scanf("%d", &logout);
-            switch (logout)
+            if (scanf("%d", &logout) == 1)
             {
-            case 1:
-            {
-
-                if (isCustomerLoggedIn)
+                switch (logout)
                 {
-                    service(isService, current);
-                }
-            }
-            break;
-            case 2:
-            {
-                if (isCustomerLoggedIn)
+                case 1:
                 {
-                    EditService(isEditService, customerData);
-                }
-            }
-            break;
-            case 3:
-            {
-                delectService(isdeleteService, customerData);
-            }
-            break;
 
-            case 4:
-
-                if (isCustomerLoggedIn)
-                {
-                    current = NULL;
-                    free(current);
-                    isCustomerLoggedIn = 0;
-                    printf("Logout Successfully!\n");
-                    return free(current);
+                    if (isCustomerLoggedIn)
+                    {
+                        service(isService, current);
+                    }
                 }
                 break;
-            default:
+                case 2:
+                {
+                    if (isCustomerLoggedIn)
+                    {
+                        EditService(isEditService, customerData);
+                    }
+                }
                 break;
-            }
-        }
-        scanf("%d", &login);
-        switch (login)
-        {
-        case 1:
-        {
-            if (!(isCustomerLoggedIn))
-            {
-                char username[20], password[20];
-                printf("Username: ");
-                scanf("%s", username);
-                printf("Password: ");
-                scanf("%s", password);
-
-                FILE *cusfile;
-                cusfile = fopen("./CSV/customer.csv", "r");
-                if (!cusfile)
+                case 3:
                 {
-                    perror("Can not opening customer.csv!");
-                    exit(1);
+                    delectService(isdeleteService, customerData);
                 }
-                int found = 0;
-                char line[1024];
-                while (fgets(line, sizeof(line), cusfile))
-                {
+                break;
 
-                    char *token = strtok(line, ",");
-                    char *save_username, *save_password, *save_fname, *save_lname, *save_id_card, *save_pnumber, *save_address;
-                    int save_day, save_month, save_year, save_age;
-                    if (token != NULL)
-                    {
-                        save_username = strdup(token);
-                        token = strtok(NULL, ",");
-                    }
-                    if (token != NULL)
-                    {
-                        save_password = strdup(token);
-                        token = strtok(NULL, ",");
-                    }
-                    if (token != NULL)
-                    {
-                        save_fname = strdup(token);
-                        token = strtok(NULL, ",");
-                    }
-                    if (token != NULL)
-                    {
-                        save_lname = strdup(token);
-                        token = strtok(NULL, ",");
-                    }
-                    if (token != NULL)
-                    {
-                        save_day = atoi(token);
-                        token = strtok(NULL, ",");
-                    }
-                    if (token != NULL)
-                    {
-                        save_month = atoi(token);
-                        token = strtok(NULL, ",");
-                    }
-                    if (token != NULL)
-                    {
-                        save_year = atoi(token);
-                        token = strtok(NULL, ",");
-                    }
-                    if (token != NULL)
-                    {
-                        save_age = atoi(token);
-                        token = strtok(NULL, ",");
-                    }
-                    if (token != NULL)
-                    {
-                        save_id_card = strdup(token);
-                        token = strtok(NULL, ",");
-                    }
-                    if (token != NULL)
-                    {
-                        save_pnumber = strdup(token);
-                        token = strtok(NULL, ",");
-                    }
-                    if (token != NULL)
-                    {
-                        save_address = strdup(token);
-                        // token = strtok(NULL, ",");
-                    }
+                case 4:
 
-                    if (strcmp(username, save_username) == 0 &&
-                        strcmp(password, save_password) == 0)
+                    if (isCustomerLoggedIn)
                     {
-                        found = 1;
-                        isCustomerLoggedIn = 1;
-                        // system("cls");
-
-                        current = (customers *)malloc(sizeof(customers));
-                        if (current == NULL)
-                        {
-                            perror("current == NULL");
-                            exit(1);
-                        }
-                        strcpy(current->username, save_username);
-                        strcpy(current->password, save_password);
-                        strcpy(current->fname, save_fname);
-                        strcpy(current->lname, save_lname);
-                        current->day = save_day;
-                        current->month = save_month;
-                        current->year = save_year;
-                        current->age = save_age;
-                        strcpy(current->id_card, save_id_card);
-                        strcpy(current->pnumber, save_pnumber);
-                        strcpy(current->address, save_address);
-
-                        /* --------------------------------------------------- */
-
-                        strcpy(customerData.username, current->username);
-                        strcpy(customerData.password, current->password);
-                        strcpy(customerData.fname, current->fname);
-                        strcpy(customerData.lname, current->lname);
-                        customerData.day = save_day;
-                        customerData.month = save_month;
-                        customerData.year = save_year;
-                        customerData.age = save_age;
-
-                        strcpy(customerData.id_card, current->id_card);
-                        strcpy(customerData.pnumber, current->pnumber);
-                        strcpy(customerData.address, current->address);
-
-                        // system("cls");
-                        printf("===============================\n");
-                        printf("Login Successfully!\n");
-                        printf("user: %s password: %s \n", customerData.username, customerData.password);
-                        printf("fname: %s lname: %s\n", customerData.fname, customerData.lname);
-                        printf("day: %d month: %d year: %d age: %d\n", customerData.day, customerData.month, customerData.year, customerData.age);
-                        printf("id_card: %s pnumber:(+66) %s\n", customerData.id_card, customerData.pnumber);
-                        printf("address: %s\n", customerData.address);
-                        break;
+                        current = NULL;
+                        free(current);
+                        isCustomerLoggedIn = 0;
+                        customerMenu(0);
+                        return;
                     }
-                }
-                fclose(cusfile);
-                if (!found)
-                {
-                    printf("Login failed. Wrong username or password.\n");
+                    break;
+                default:
+                    printf("Invalid choice. Please try again.\n");
+                    break;
                 }
             }
             else
             {
-                printf("You are logged in.\n");
-            }
-        }
-        break;
-        case 2:
-        {
-            {
-                // add customer
-
-                printf("Register\n");
-                cust = (customers *)malloc(sizeof(customers));
-                if (cust == NULL)
-                {
-                    perror("cust == NULL");
-                    exit(1);
-                }
-                printf("Username: ");
-                scanf("%s", cust->username);
-                printf("Password: ");
-                scanf("%s", cust->password);
-                printf("First Name: ");
-                scanf("%s", cust->fname);
-                printf("Last Name: ");
-                scanf("%s", cust->lname);
-                printf("Date of birth (dd/mm/yyyy)\n");
-                printf("Day(01/mm/yyyy): ");
-                scanf("%d", &cust->day);
-                printf("Month(dd/01/yyyy): ");
-                scanf("%d", &cust->month);
-                printf("Year(dd/mm/2543): ");
-                scanf("%d", &cust->year);
-                printf("Age: ");
-                scanf("%d", &cust->age);
-                while (getchar() != '\n')
+                printf("Invalid choice. Please enter a numeric choice.\n");
+                // Consume any remaining characters in the input buffer
+                int c;
+                while ((c = getchar()) != '\n' && c != EOF)
                     ;
-                printf("Id Card: ");
-                strcpy(cust->id_card, getTel(13));
-                printf("Phone Number: ");
-                strcpy(cust->pnumber, getTel(10));
-                printf("Address: ");
-                fgets(cust->address, sizeof(cust->address), stdin);
-
-                cust->address[strcspn(cust->address, "\n")] = '\0';
-
-                FILE *cusfile;
-                cusfile = fopen("./CSV/customer.csv", "r");
-
-                if (!cusfile)
-                {
-                    perror("Error opening file");
-                    exit(1); // Exit the program if the file couldn't be opened
-                }
-
-                // fgets(input, maxSize, stdin);
-                int found = 0;
-                char line[1024];
-                while (fgets(line, sizeof(line), cusfile))
-                {
-
-                    char *token = strtok(line, ",");
-                    char *save_username, *save_password, *save_fname, *save_lname, *save_id_card, *save_pnumber, *save_address;
-                    int save_day, save_month, save_year, save_age;
-                    if (token != NULL)
-                    {
-                        save_username = strdup(token);
-                        token = strtok(NULL, ",");
-                    }
-                    if (token != NULL)
-                    {
-                        save_password = strdup(token);
-                        token = strtok(NULL, ",");
-                    }
-                    if (token != NULL)
-                    {
-                        save_fname = strdup(token);
-                        token = strtok(NULL, ",");
-                    }
-                    if (token != NULL)
-                    {
-                        save_lname = strdup(token);
-                        token = strtok(NULL, ",");
-                    }
-                    if (token != NULL)
-                    {
-                        save_day = atoi(token);
-                        token = strtok(NULL, ",");
-                    }
-                    if (token != NULL)
-                    {
-                        save_month = atoi(token);
-                        token = strtok(NULL, ",");
-                    }
-                    if (token != NULL)
-                    {
-                        save_year = atoi(token);
-                        token = strtok(NULL, ",");
-                    }
-                    if (token != NULL)
-                    {
-                        save_age = atoi(token);
-                        token = strtok(NULL, ",");
-                    }
-                    if (token != NULL)
-                    {
-                        save_id_card = strdup(token);
-                        token = strtok(NULL, ",");
-                    }
-                    if (token != NULL)
-                    {
-                        save_pnumber = strdup(token);
-                        token = strtok(NULL, ",");
-                    }
-                    if (token != NULL)
-                    {
-                        save_address = strdup(token);
-                        // token = strtok(NULL, ",");
-                    }
-                    if (strcmp(cust->username, save_username) == 0)
-
-                    {
-                        found = 1;
-                        printf("has username\n");
-                    }
-                    if (strcmp(cust->id_card, save_id_card) == 0)
-                    {
-                        found = 1;
-                        printf("has id_card\n");
-                        break;
-                    }
-                }
-                fclose(cusfile);
-
-                // savefile
-                if (!found)
-                {
-                    cusfile = fopen("./CSV/customer.csv", "a");
-                    if (!cusfile)
-                    {
-                        perror("Can not opening customer.csv!");
-                        exit(1);
-                    }
-                    fprintf(cusfile, "%s,%s,%s,%s,%d,%d,%d,%d,%s,%s,%s\n",
-                            cust->username,
-                            cust->password,
-                            cust->fname,
-                            cust->lname,
-                            cust->day,
-                            cust->month,
-                            cust->year,
-                            cust->age,
-                            cust->id_card,
-                            cust->pnumber,
-                            cust->address);
-                    printf("Register Successfully\n");
-
-                    fclose(cusfile);
-                    free(cust);
-                    break;
-                }
             }
         }
-        break;
-        case 3:
-        {
-            printf("forget password\n");
-        }
-        break;
-        case 4:
-            return;
-        default:
-            printf("Invalid choice. Please try again.\n");
-            if (login == 4)
-            {
-                return;
-            }
-            break;
-        } // close switch case login
     }
 } // end

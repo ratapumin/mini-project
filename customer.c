@@ -278,7 +278,6 @@ void customerMenu(int isCustomerLoggedIn)
                         printf("day: %d month: %d year: %d age: %d\n", customerData.day, customerData.month, customerData.year, customerData.age);
                         printf("id_card: %s pnumber:(+66) %s\n", customerData.id_card, customerData.pnumber);
                         printf("address: %s\n", customerData.address);
-
                         break;
                     }
                 }
@@ -298,24 +297,14 @@ void customerMenu(int isCustomerLoggedIn)
         {
             {
                 // add customer
-                FILE *cusfile;
-                cusfile = fopen("./CSV/customer.csv", "a");
 
-                if (!cusfile)
-                {
-                    perror("Error opening file");
-                    exit(1); // Exit the program if the file couldn't be opened
-                }
-
-                // fgets(input, maxSize, stdin);
+                printf("Register\n");
                 cust = (customers *)malloc(sizeof(customers));
                 if (cust == NULL)
                 {
                     perror("cust == NULL");
                     exit(1);
                 }
-                printf("Register\n");
-
                 printf("Username: ");
                 scanf("%s", cust->username);
                 printf("Password: ");
@@ -333,35 +322,132 @@ void customerMenu(int isCustomerLoggedIn)
                 scanf("%d", &cust->year);
                 printf("Age: ");
                 scanf("%d", &cust->age);
+                while (getchar() != '\n')
+                    ;
                 printf("Id Card: ");
                 strcpy(cust->id_card, getTel(13));
                 printf("Phone Number: ");
                 strcpy(cust->pnumber, getTel(10));
                 printf("Address: ");
-                scanf("%s", cust->address);
+                fgets(cust->address, sizeof(cust->address), stdin);
 
-                printf("fname: %s lname: %s\n", cust->fname, cust->lname);
-                printf("id_card: %s pnumber:(+66) %s\n", cust->id_card, cust->pnumber);
-                printf("address: %s\n", cust->address);
+                cust->address[strcspn(cust->address, "\n")] = '\0';
+
+                FILE *cusfile;
+                cusfile = fopen("./CSV/customer.csv", "r");
+
+                if (!cusfile)
+                {
+                    perror("Error opening file");
+                    exit(1); // Exit the program if the file couldn't be opened
+                }
+
+                // fgets(input, maxSize, stdin);
+                int found = 0;
+                char line[1024];
+                while (fgets(line, sizeof(line), cusfile))
+                {
+
+                    char *token = strtok(line, ",");
+                    char *save_username, *save_password, *save_fname, *save_lname, *save_id_card, *save_pnumber, *save_address;
+                    int save_day, save_month, save_year, save_age;
+                    if (token != NULL)
+                    {
+                        save_username = strdup(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_password = strdup(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_fname = strdup(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_lname = strdup(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_day = atoi(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_month = atoi(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_year = atoi(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_age = atoi(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_id_card = strdup(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_pnumber = strdup(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_address = strdup(token);
+                        // token = strtok(NULL, ",");
+                    }
+                    if (strcmp(cust->username, save_username) == 0)
+
+                    {
+                        found = 1;
+                        printf("has username\n");
+                    }
+                    if (strcmp(cust->id_card, save_id_card) == 0)
+                    {
+                        found = 1;
+                        printf("has id_card\n");
+                        break;
+                    }
+                }
+                fclose(cusfile);
 
                 // savefile
-                fprintf(cusfile, "%s,%s,%s,%s,%d,%d,%d,%d,%s,%s,%s\n",
-                        cust->username,
-                        cust->password,
-                        cust->fname,
-                        cust->lname,
-                        cust->day,
-                        cust->month,
-                        cust->year,
-                        cust->age,
-                        cust->id_card,
-                        cust->pnumber,
-                        cust->address);
-                printf("Register Successfully\n");
+                if (!found)
+                {
+                    cusfile = fopen("./CSV/customer.csv", "a");
+                    if (!cusfile)
+                    {
+                        perror("Can not opening customer.csv!");
+                        exit(1);
+                    }
+                    fprintf(cusfile, "%s,%s,%s,%s,%d,%d,%d,%d,%s,%s,%s\n",
+                            cust->username,
+                            cust->password,
+                            cust->fname,
+                            cust->lname,
+                            cust->day,
+                            cust->month,
+                            cust->year,
+                            cust->age,
+                            cust->id_card,
+                            cust->pnumber,
+                            cust->address);
+                    printf("Register Successfully\n");
 
-                fclose(cusfile);
-                free(cust);
-                break;
+                    fclose(cusfile);
+                    free(cust);
+                    break;
+                }
             }
         }
         break;
@@ -381,4 +467,4 @@ void customerMenu(int isCustomerLoggedIn)
             break;
         } // close switch case login
     }
-}
+} // end

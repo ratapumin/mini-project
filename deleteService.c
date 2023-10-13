@@ -121,6 +121,7 @@ void delectService(int isdeleteService, customers customerData)
                 strcmp(customerData.username, deletelist->data.username) == 0)
             {
                 found = 1;
+                system("cls");
                 printf("===============================================\n");
                 printf("                DELETE BOOKING                 \n");
                 printf("===============================================\n");
@@ -200,21 +201,21 @@ void delectService(int isdeleteService, customers customerData)
                             }
 
                             printf("\nUpdated Booking List:\n");
-                            ptr = head;
-                            i = 0;
-                            while (ptr != NULL)
-                            {
-                                printf("===============================================\n");
-                                printf("BOOKING = %d\n", i);
-                                printf("===============================================\n");
-                                printf("ID Card: %s\n", ptr->data.id_card);
-                                printf("Username: %s\n", ptr->data.username);
-                                printf("Day/Month/Year: %d/%d/%d\n", ptr->data.day, ptr->data.month, ptr->data.year);
-                                printf("Timer Service: %.2f\n", ptr->data.time);
-                                printf("===============================================\n");
-                                ptr = ptr->next;
-                                i++;
-                            }
+                            // ptr = head;
+                            // i = 0;
+                            // while (ptr != NULL)
+                            // {
+                            //     printf("===============================================\n");
+                            //     printf("BOOKING = %d\n", i);
+                            //     printf("===============================================\n");
+                            //     printf("ID Card: %s\n", ptr->data.id_card);
+                            //     printf("Username: %s\n", ptr->data.username);
+                            //     printf("Day/Month/Year: %d/%d/%d\n", ptr->data.day, ptr->data.month, ptr->data.year);
+                            //     printf("Timer Service: %.2f\n", ptr->data.time);
+                            //     printf("===============================================\n");
+                            //     ptr = ptr->next;
+                            //     i++;
+                            // }
 
                             // Save the updated data into the CSV file
                             FILE *deleteservicefile;

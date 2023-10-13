@@ -11,9 +11,9 @@ void employeeMenu(int isEmployeeMenu);
 
 int main()
 {
-    int choice, case_emp, case_pub, case_service;
+    int choice;
+    char input[100]; // Buffer to read user input
 
-    char ch = 'y';
     int isCustomerLoggedIn = 0;
     int isEmployeeMenu = 0;
 
@@ -25,28 +25,40 @@ int main()
         printf("2: Employee\n");
         printf("3: Exit\n");
         printf("Select the desired item: ");
-        scanf("%d", &choice);
-        printf("===============================\n");
 
-        switch (choice)
+        if (fgets(input, sizeof(input), stdin) != NULL)
         {
-        case 1:
-        {
-            customerMenu(isCustomerLoggedIn);
-            break;
+            if (sscanf(input, "%d", &choice) == 1)
+            {
+
+                int c;
+                while ((c = getchar()) != '\n' && c != EOF)
+                    ;
+
+                switch (choice)
+                {
+                case 1:
+                    customerMenu(isCustomerLoggedIn);
+                    break;
+                case 2:
+                    employeeMenu(isEmployeeMenu);
+                    break;
+                case 3:
+                    printf("Exit\n");
+                    exit(0);
+                default:
+                    printf("Invalid choice. Please try again.\n");
+                }
+            }
+            else
+            {
+                printf("Invalid choice. Please enter a numeric choice.\n");
+            }
         }
-        break;
-        case 2:
+        else
         {
-            employeeMenu(isEmployeeMenu);
-        }
-        break;
-        case 3:
-            printf("Exit\n");
-            exit(0);
-        default:
-            printf("Invalid choice. Please try again.\n");
-            break;
+            printf("Error reading input.\n");
+            exit(1);
         }
     }
 }

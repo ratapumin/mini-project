@@ -61,7 +61,7 @@ void employeeMenu(int isEmployeeMenu)
                         continue;
                     }
                     char *token = strtok(line, ",");
-                    char *save_id_card, *save_username;
+                    char *save_id_card, *save_username, *save_service;
                     int save_day, save_month, save_year;
                     float save_time;
 
@@ -73,6 +73,11 @@ void employeeMenu(int isEmployeeMenu)
                     if (token != NULL)
                     {
                         save_username = strdup(token);
+                        token = strtok(NULL, ",");
+                    }
+                    if (token != NULL)
+                    {
+                        save_service = strdup(token);
                         token = strtok(NULL, ",");
                     }
                     if (token != NULL)
@@ -103,24 +108,24 @@ void employeeMenu(int isEmployeeMenu)
                         printf("===============================================\n");
                         printf("ID Card: %s\n", save_id_card);
                         printf("Username: %s\n", save_username);
+                        printf("Service: %s\n", save_service);
                         printf("Day/Month/Year: %d/%d/%d\n",
                                save_day, save_month, save_year);
                         printf("Timer Service: %.2f\n", save_time);
                         printf("===============================================\n");
                     }
                     i++;
-
                 }
                 int re;
                 printf("1: Return to EmployeeMenu\n");
                 printf("Select the desired item: ");
-                scanf("%d",&re);
-                if(re==1)
+                scanf("%d", &re);
+                if (re == 1)
                 {
                     employeeMenu(1);
                 }
             }
-                break;
+            break;
             default:
                 break;
             }

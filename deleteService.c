@@ -7,6 +7,7 @@ typedef struct DeleteviceData
 {
     char id_card[14];
     char username[20];
+    char service[30];
     int day;
     int month;
     int year;
@@ -54,7 +55,7 @@ void delectService(int isdeleteService, customers customerData)
         //     continue;
         // }
         char *token = strtok(line, ",");
-        char *save_id_card, *save_username;
+        char *save_id_card, *save_username, *save_service;
         int save_day, save_month, save_year, save_time;
 
         if (token != NULL)
@@ -65,6 +66,11 @@ void delectService(int isdeleteService, customers customerData)
         if (token != NULL)
         {
             save_username = strdup(token);
+            token = strtok(NULL, ",");
+        }
+        if (token != NULL)
+        {
+            save_service = strdup(token);
             token = strtok(NULL, ",");
         }
         if (token != NULL)
@@ -91,6 +97,7 @@ void delectService(int isdeleteService, customers customerData)
         deletedata = (DeleteData *)malloc(sizeof(DeleteData));
         strcpy(deletedata->id_card, save_id_card);
         strcpy(deletedata->username, save_username);
+        strcpy(deletedata->service, save_service);
         deletedata->day = save_day;
         deletedata->month = save_month;
         deletedata->year = save_year;
@@ -121,7 +128,6 @@ void delectService(int isdeleteService, customers customerData)
                 strcmp(customerData.username, deletelist->data.username) == 0)
             {
                 found = 1;
-                system("cls");
                 printf("===============================================\n");
                 printf("                DELETE BOOKING                 \n");
                 printf("===============================================\n");
@@ -129,6 +135,7 @@ void delectService(int isdeleteService, customers customerData)
                 printf("===============================================\n");
                 printf("ID Card: %s\n", deletelist->data.id_card);
                 printf("Username: %s\n", deletelist->data.username);
+                printf("Service: %s\n", deletelist->data.service);
                 printf("Day/Month/Year: %d/%d/%d\n",
                        deletelist->data.day, deletelist->data.month, deletelist->data.year);
                 printf("Timer Service: %.2f\n", deletelist->data.time);
@@ -149,7 +156,7 @@ void delectService(int isdeleteService, customers customerData)
 
     if (found)
     {
-        printf("Enter The booking number you want to delete: ");
+        printf("Enter The booking number you want to delete(Enter 0 for return): ");
         scanf("%d", &case_delete);
         if (case_delete < 1 || case_delete > i)
         {
@@ -173,12 +180,12 @@ void delectService(int isdeleteService, customers customerData)
 
                         if (current_booking == case_delete)
                         {
-                            system("cls");
                             printf("===============================================\n");
                             printf("BOOKING = %d\n", case_delete);
                             printf("===============================================\n");
                             printf("ID Card: %s\n", ptr->data.id_card);
                             printf("Username: %s\n", ptr->data.username);
+                            printf("Service: %s\n", deletelist->data.service);
                             printf("Day/Month/Year: %d/%d/%d\n",
                                    ptr->data.day, ptr->data.month, ptr->data.year);
                             printf("Timer Service: %.2f\n", ptr->data.time);
@@ -199,23 +206,10 @@ void delectService(int isdeleteService, customers customerData)
                                 }
                                 free(ptr);
                             }
-
-                            printf("\nUpdated Booking List:\n");
-                            // ptr = head;
-                            // i = 0;
-                            // while (ptr != NULL)
-                            // {
-                            //     printf("===============================================\n");
-                            //     printf("BOOKING = %d\n", i);
-                            //     printf("===============================================\n");
-                            //     printf("ID Card: %s\n", ptr->data.id_card);
-                            //     printf("Username: %s\n", ptr->data.username);
-                            //     printf("Day/Month/Year: %d/%d/%d\n", ptr->data.day, ptr->data.month, ptr->data.year);
-                            //     printf("Timer Service: %.2f\n", ptr->data.time);
-                            //     printf("===============================================\n");
-                            //     ptr = ptr->next;
-                            //     i++;
-                            // }
+                            if (ch == 'n')
+                            {
+                                customerMenu(1);
+                            }
 
                             // Save the updated data into the CSV file
                             FILE *deleteservicefile;
@@ -229,8 +223,9 @@ void delectService(int isdeleteService, customers customerData)
                             DeleteList *current = head;
                             while (current != NULL)
                             {
-                                fprintf(deleteservicefile, "%s,%s,%d,%d,%d,%.2f\n", current->data.id_card, current->data.username,
-                                        current->data.day, current->data.month, current->data.year, current->data.time);
+                                fprintf(deleteservicefile, "%s,%s,%s,%d,%d,%d,%.2f\n", current->data.id_card,
+                                        current->data.username, current->data.service, current->data.day, current->data.month,
+                                        current->data.year, current->data.time);
                                 current = current->next;
                             }
 
@@ -248,43 +243,3 @@ void delectService(int isdeleteService, customers customerData)
     }
 
 } // end
-
-// system("cls");
-// printf("===============================================\n");
-// printf("BOOKING = %d\n", case_delete);
-// printf("===============================================\n");
-// printf("ID Card: %s\n", ptr->data.id_card);
-// printf("Username: %s\n", ptr->data.username);
-// printf("Day/Month/Year: %d/%d/%d\n",
-//        ptr->data.day, ptr->data.month, ptr->data.year);
-// printf("Timer Service: %.2f\n", ptr->data.time);
-// printf("===============================================\n");
-
-// printf("===============================================\n");
-// printf("BOOKING = %d\n", case_delete);
-// printf("===============================================\n");
-// printf("ID Card: %s\n", ptr->data.id_card);
-// printf("Username: %s\n", ptr->data.username);
-// printf("Day/Month/Year: %d/%d/%d\n",
-//        ptr->data.day, ptr->data.month, ptr->data.year);
-// printf("Timer Service: %.2f\n", ptr->data.time);
-// printf("===============================================\n");
-
-// if (current_booking != case_delete)
-// {
-//     printf("Invalid booking number. Please enter a valid number.\n");
-// }
-
-// printf("Remaining Data in the Node:\n");
-// ptr = head;
-// while (ptr != NULL)
-// {
-//     printf("===============================================\n");
-//     printf("ID Card: %s\n", ptr->data.id_card);
-//     printf("Username: %s\n", ptr->data.username);
-//     printf("Day/Month/Year: %d/%d/%d\n",
-//            ptr->data.day, ptr->data.month, ptr->data.year);
-//     printf("Timer Service: %.2f\n", ptr->data.time);
-//     printf("===============================================\n");
-//     ptr = ptr->next;
-// }

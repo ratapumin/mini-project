@@ -70,14 +70,10 @@ char *getTel(int pass_len)
 void customerMenu(int isCustomerLoggedIn)
 {
     int login, logout;
-    // char save_username[20], save_password[20], save_fname[50], save_lname[50];
-    // char save_id_card[13], save_pnumber[10], save_address[100];
-    // int save_age;
-    // int save_day, save_month, save_year;
     int isService = 0;
     int isEditService = 0;
     int isdeleteService = 0;
-
+    int i = 0;
     customers *cust = NULL,
               *current = NULL;
 
@@ -420,7 +416,8 @@ void customerMenu(int isCustomerLoggedIn)
             printf("1: Booking service\n");
             printf("2: Edit service\n");
             printf("3: Delete service\n");
-            printf("4: Logout\n");
+            printf("4: View reservation list\n");
+            printf("5: Logout\n");
             printf("Select the desired item: ");
             if (scanf("%d", &logout) == 1)
             {
@@ -445,10 +442,97 @@ void customerMenu(int isCustomerLoggedIn)
                 case 3:
 
                     delectService(isdeleteService, customerData);
-
                     break;
-
                 case 4:
+                {
+                    printf("===============================\n");
+                    printf("You: %s %s\n", current->fname, current->lname);
+                    printf("===============================\n");
+
+                    FILE *viewServiceFile;
+                    viewServiceFile = fopen("./CSV/service.csv", "r");
+                    if (!viewServiceFile)
+                    {
+                        perror("Error opening file");
+                        exit(1);
+                    }
+
+                    char line[1024];
+                    int row = 0;
+
+                    while (fgets(line, sizeof(line), viewServiceFile))
+                    {
+                        if (row == 0)
+                        {
+                            strtok(line, ","); // Skip the header row
+                            row++;
+                            continue;
+                        }
+
+                        char *token = strtok(line, ",");
+                        char *save_id_card, *save_username, *save_service;
+                        int save_day, save_month, save_year;
+                        float save_time;
+
+                        if (token != NULL)
+                        {
+                            save_id_card = strdup(token);
+                            token = strtok(NULL, ",");
+                        }
+                        if (token != NULL)
+                        {
+                            save_username = strdup(token);
+                            token = strtok(NULL, ",");
+                        }
+                        if (token != NULL)
+                        {
+                            save_service = strdup(token); // Read and save the service correctly
+                            token = strtok(NULL, ",");
+                        }
+                        if (token != NULL)
+                        {
+                            save_day = atoi(token);
+                            token = strtok(NULL, ",");
+                        }
+                        if (token != NULL)
+                        {
+                            save_month = atoi(token);
+                            token = strtok(NULL, ",");
+                        }
+                        if (token != NULL)
+                        {
+                            save_year = atoi(token);
+                            token = strtok(NULL, ",");
+                        }
+                        if (token != NULL)
+                        {
+                            save_time = atof(token); // Use atof for floating-point numbers
+                            token = strtok(NULL, ",");
+                        }
+
+                        if (save_id_card != NULL && save_service != NULL) // Make sure save_service is not NULL
+                        {
+                            if (strcmp(customerData.id_card, save_id_card) == 0 && strcmp(customerData.username, save_username) == 0)
+                            {
+                                printf("===============================================\n");
+                                printf("BOOKING = %d\n", row);
+                                printf("===============================================\n");
+                                printf("ID Card: %s\n", save_id_card);
+                                printf("Username: %s\n", save_username);
+                                printf("Service: %s\n", save_service);
+                                printf("Day/Month/Year: %d/%d/%d\n", save_day, save_month, save_year);
+                                printf("Timer Service: %.2f\n", save_time);
+                                printf("===============================================\n");
+                            }
+                        }
+                        row++;
+                    }
+
+                    fclose(viewServiceFile);
+                    break;
+                }
+
+                case 5:
 
                     if (isCustomerLoggedIn)
                     {

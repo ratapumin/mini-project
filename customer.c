@@ -84,7 +84,8 @@ void customerMenu(int isCustomerLoggedIn)
     while (1)
     {
         printf("===============================\n");
-        printf("Menu For Customer\n");
+        printf("       Menu For Customer       \n");
+        printf("===============================\n");
 
         if (!(isCustomerLoggedIn))
         {
@@ -219,13 +220,6 @@ void customerMenu(int isCustomerLoggedIn)
                                 strcpy(customerData.address, current->address);
 
                                 // system("cls");
-                                printf("===============================\n");
-                                printf("Login Successfully!\n");
-                                printf("user: %s password: %s \n", customerData.username, customerData.password);
-                                printf("fname: %s lname: %s\n", customerData.fname, customerData.lname);
-                                printf("day: %d month: %d year: %d age: %d\n", customerData.day, customerData.month, customerData.year, customerData.age);
-                                printf("id_card: %s pnumber:(+66) %s\n", customerData.id_card, customerData.pnumber);
-                                printf("address: %s\n", customerData.address);
                                 break;
                             }
                         }
@@ -245,7 +239,6 @@ void customerMenu(int isCustomerLoggedIn)
                 {
                     {
                         // add customer
-
                         printf("Register\n");
                         cust = (customers *)malloc(sizeof(customers));
                         if (cust == NULL)
@@ -358,12 +351,12 @@ void customerMenu(int isCustomerLoggedIn)
 
                             {
                                 found = 1;
-                                printf("has username\n");
+                                printf("Sorry, this Username already exists.\n");
                             }
                             if (strcmp(cust->id_card, save_id_card) == 0)
                             {
                                 found = 1;
-                                printf("has id_card\n");
+                                printf("Sorry, this ID card already exists.\n");
                                 break;
                             }
                         }
@@ -423,9 +416,7 @@ void customerMenu(int isCustomerLoggedIn)
         else
         {
 
-            printf("===============================\n");
-            printf("fname: %s lname: %s\n", customerData.fname, customerData.lname);
-            printf("id_card: %s \n", customerData.id_card);
+            printf("You: %s %s\n", customerData.fname, customerData.lname);
             printf("1: Booking service\n");
             printf("2: Edit service\n");
             printf("3: Delete service\n");
@@ -436,27 +427,26 @@ void customerMenu(int isCustomerLoggedIn)
                 switch (logout)
                 {
                 case 1:
-                {
 
                     if (isCustomerLoggedIn)
                     {
                         service(isService, current);
                     }
-                }
-                break;
+
+                    break;
                 case 2:
-                {
+
                     if (isCustomerLoggedIn)
                     {
                         EditService(isEditService, customerData);
                     }
-                }
-                break;
+
+                    break;
                 case 3:
-                {
+
                     delectService(isdeleteService, customerData);
-                }
-                break;
+
+                    break;
 
                 case 4:
 

@@ -6,6 +6,7 @@ typedef struct ServiceData
 {
     char id_card[14];
     char username[20];
+    char service[30];
     int day;
     int month;
     int year;
@@ -22,7 +23,7 @@ typedef struct ServiceList
 void EditService(int isEditService, customers customarData)
 {
     int case_edit, case_time;
-    char save_id_card[14], save_username[30];
+    char save_id_card[14], save_username[30], save_service[30];
     int day, month, year;
     int save_day, save_month, save_year;
     float add_time, save_time;
@@ -33,10 +34,12 @@ void EditService(int isEditService, customers customarData)
     ServiceList *servicelist = NULL, *head = NULL, *current = NULL, *ptr = NULL;
 
     system("cls");
-    printf("You: f:%s l:%s id:%s\n",
+    printf("You:%s %s\n",
            customerData.fname,
-           customerData.lname,
-           customerData.id_card);
+           customerData.lname);
+    printf("===============================\n");
+    printf("          EDIT BOOKING         \n");
+    printf("===============================\n");
     FILE *editservicefile;
     editservicefile = fopen("./CSV/service.csv", "r");
     if (!editservicefile)
@@ -56,7 +59,7 @@ void EditService(int isEditService, customers customarData)
         //     continue;
         // }
         char *token = strtok(line, ",");
-        char *save_id_card, *save_username;
+        char *save_id_card, *save_username, *save_service;
         int save_day, save_month, save_year, save_time;
 
         if (token != NULL)
@@ -67,6 +70,11 @@ void EditService(int isEditService, customers customarData)
         if (token != NULL)
         {
             save_username = strdup(token);
+            token = strtok(NULL, ",");
+        }
+        if (token != NULL)
+        {
+            save_service = strdup(token);
             token = strtok(NULL, ",");
         }
         if (token != NULL)
@@ -92,6 +100,7 @@ void EditService(int isEditService, customers customarData)
         servicedata = (ServiceData *)malloc(sizeof(ServiceData));
         strcpy(servicedata->id_card, save_id_card);
         strcpy(servicedata->username, save_username);
+        strcpy(servicedata->service, save_service);
         servicedata->day = save_day;
         servicedata->month = save_month;
         servicedata->year = save_year;
@@ -129,6 +138,7 @@ void EditService(int isEditService, customers customarData)
                 printf("===============================================\n");
                 printf("ID Card: %s\n", servicelist->data.id_card);
                 printf("Username: %s\n", servicelist->data.username);
+                printf("Service: %s\n", servicelist->data.service);
                 printf("Day/Month/Year: %d/%d/%d\n",
                        servicelist->data.day, servicelist->data.month, servicelist->data.year);
                 printf("Timer Service: %.2f\n", servicelist->data.time);
@@ -150,7 +160,7 @@ void EditService(int isEditService, customers customarData)
     if (found)
     {
 
-        printf("Enter The booking number you want to edit: ");
+        printf("Enter The booking number you want to edit(Enter 0 for return): ");
         scanf("%d", &case_edit);
 
         if (case_edit < 1 || case_edit > i)
@@ -236,9 +246,85 @@ void EditService(int isEditService, customers customarData)
                     }
                     printf("Year: 2566\n");
                     printf("Time to change\n");
-                    printf("Open 10.00 - 19.00\n");
-                    printf("time: ");
-      
+                    printf("Open Booking 10.00 - 18.30\n");
+                    printf("1: 10.00\n");
+                    printf("2: 10.30\n");
+                    printf("3: 11.00\n");
+                    printf("4: 11.30\n");
+                    printf("12.00-13.00 Lunch break !!\n");
+                    printf("5: 13.00\n");
+                    printf("6: 13.30\n");
+                    printf("7: 14.00\n");
+                    printf("8: 14.30\n");
+                    printf("9: 15.00\n");
+                    printf("10: 15.30\n");
+                    printf("11: 16.00\n");
+                    printf("12: 16.30\n");
+                    printf("13: 17.00\n");
+                    printf("14: 17.30\n");
+                    printf("15: 18.00\n");
+                    printf("16: 18.30\n");
+                    printf("Please select a time period: ");
+                    if (scanf("%d", &case_time) != 1 || case_time < 1 || case_time > 16)
+                    {
+                        printf("Invalid time slot selection.\n");
+                        inputError = 1;
+                        continue;
+                    }
+                    switch (case_time)
+                    {
+                    case 1:
+                        add_time = 10.00;
+                        break;
+                    case 2:
+                        add_time = 10.30;
+                        break;
+                    case 3:
+                        add_time = 11.00;
+                        break;
+                    case 4:
+                        add_time = 11.30;
+                        break;
+                    case 5:
+                        add_time = 13.00;
+                        break;
+                    case 6:
+                        add_time = 13.30;
+                        break;
+                    case 7:
+                        add_time = 14.00;
+                        break;
+                    case 8:
+                        add_time = 14.30;
+                        break;
+                    case 9:
+                        add_time = 15.00;
+                        break;
+                    case 10:
+                        add_time = 15.30;
+                        break;
+                    case 11:
+                        add_time = 16.00;
+                        break;
+                    case 12:
+                        add_time = 16.30;
+                        break;
+                    case 13:
+                        add_time = 17.00;
+                        break;
+                    case 14:
+                        add_time = 17.30;
+                        break;
+                    case 15:
+                        add_time = 18.00;
+                        break;
+                    case 16:
+                        add_time = 18.30;
+                        break;
+                    default:
+                        printf("Invalid time slot selection.\n");
+                        return;
+                    }
                     ptr->data.day = day;
                     ptr->data.month = month;
                     ptr->data.year = 2566;

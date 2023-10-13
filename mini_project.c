@@ -21,7 +21,8 @@ int main()
     while (1)
     {
         printf("===============================\n");
-        printf("Main menu\n");
+        printf("          Main For Menu        \n");
+        printf("===============================\n");
         printf("1: Customer\n");
         printf("2: Employee\n");
         printf("3: Exit\n");
